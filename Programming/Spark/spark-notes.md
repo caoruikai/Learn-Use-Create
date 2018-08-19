@@ -38,9 +38,16 @@ spark = pyspark.sql.SparkSession.builder.appName('test').getOrCreate()
 spark.range(10).collect()
 ```
 
-7. Download and install Pycharm;
+9. Install ipykernel of `spark` conda environment for the jupyter:
 
-8. Create a project with interpreter `~/anaconda3/envs/spark/bin/python` and create a first python script to run:
+```shell
+source activate spark
+python -m ipykernel install --user --name spark --display-name "Python 3 (spark)"
+```
+
+8. Download and install Pycharm;
+
+9. Create a project with interpreter `~/anaconda3/envs/spark/bin/python` and create a first python script to run:
 
 ```python
 # Start pyspark via provided command
@@ -50,4 +57,4 @@ spark = pyspark.sql.SparkSession.builder.appName('test').getOrCreate()
 print(spark.range(10).collect())
 ```
 
-9. Create a runtime configuration for the script: change the interpreter to the spark one and add the script path;
+10. Create a runtime configuration for the script: change the interpreter to the spark one and add the script path;
