@@ -1,2 +1,3 @@
 # Learning
-Learning Notes and Summary
+
+Notes on tech stuff: Data, Mathematics, Statistics, Algorithms, Developing...
