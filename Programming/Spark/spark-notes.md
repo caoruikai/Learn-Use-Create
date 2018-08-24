@@ -24,7 +24,7 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk
 # Added for Pyspark
 export SPARK_HOME=$HOME/spark-2.3.1-bin-hadoop2.7
 export PYSPARK_PYTHON=$HOME/anaconda3/envs/spark/bin/python
-export PYSPARK_DRIVER_PYTHON=$HOME/anaconda3/envs/spark/bin/ipython
+export PYSPARK_DRIVER_PYTHON=$HOME/anaconda3/envs/spark/bin/ipython3
 alias pysparknote "export PYSPARK_DRIVER_PYTHON=$HOME/anaconda3/envs/spark/bin/jupyter; export PYSPARK_DRIVER_PYTHON_OPS=lab; pyspark"
 ```
 
