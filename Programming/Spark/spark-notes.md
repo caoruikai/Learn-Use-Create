@@ -36,6 +36,13 @@ export PATH=$SPARK_HOME:$PATH
 cp $SPARK_HOME/conf/log4j.properties.template log4j.properties
 ```
 
+This is equivalent to add the configuartion in the python script:
+
+```python
+sc = spark.sparkContext
+sc.setLogLevel('ERROR')
+```
+
 7. Activate conda env by `source activate spark`, open `pyspark` shell and test Spark with the following (or try the jupyter notebook alias by `pysparknote`):
 
 ```python
