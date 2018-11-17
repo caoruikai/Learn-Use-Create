@@ -7,3 +7,5 @@
 2. Removed all tracked files `git rm -r --cached .`;
 
 3. Add all files needs to be tracked `git add .`.
+
+- If using ssh key, then make sure to clone repos using ssh url
