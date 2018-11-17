@@ -24,8 +24,6 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
 ```
 
-2. Add to Github account `profile icon -> settings -> SSH and GPG keys -> New SSH key`.
-
 ## Install Nvidia graphic driver
 
 1. Check graphic card model: `ubuntu-drivers devices`
@@ -33,3 +31,28 @@ ssh-add ~/.ssh/id_rsa
 2. Install the driver: `sudo ubuntu-drivers autoinstall`
 
 3. Reboot
+
+## Install Sogou input
+
+From [this blog](https://www.jianshu.com/p/c936a8a2180e)
+
+1. Run the shell script
+
+```shell
+sudo apt-get remove ibus # 卸载ibus
+sudo apt-get purge ibus # 清除ibus配置。
+sudo  apt-get remove indicator-keyboard # 卸载顶部面板任务栏上的键盘指示。
+sudo apt install fcitx-table-wbpy fcitx-config-gtk #安装fcitx输入法框架
+im-config -n fcitx # 切换为 Fcitx输入法
+sudo shutdown -r now # im-config 配置需要重启系统才能生效
+# 下载搜狗输入法
+wget http://cdn2.ime.sogou.com/dl/index/1524572264/sogoupinyin_2.2.0.0108_amd64.deb?st=ryCwKkvb-0zXvtBlhw5q4Q&e=1529739124&fn=sogoupinyin_2.2.0.0108_amd64.deb
+sudo dpkg -i sogoupinyin_2.2.0.0108_amd64.deb # 安装搜狗输入法
+sudo apt-get install -f # 修复损坏缺少的包
+fcitx-config-gtk3 # 打开 Fcitx 输入法配置
+```
+2. 问题:输入法皮肤透明
+
+`fcitx设置 >>附加组件>>勾选高级 >>取消经典界面`
+
+`Configure>>  Addon  >>Advanced>>Classic`
