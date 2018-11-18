@@ -14,6 +14,16 @@ make
 sudo insmod 8812au.ko
 ```
 
+To add it to any new kernels installed by Ubuntu, configure it via DKMS as follows:
+
+```shell
+cd /tmp
+sudo cp -R gnab_rtl8812au /usr/src/8812au-4.2.2
+sudo dkms add -m 8812au -v 4.2.2
+sudo dkms build -m 8812au -v 4.2.2
+sudo dkms install -m 8812au -v 4.2.2
+```
+
 ## Generate SSH keys and upload to github
 
 1. Generate ssh key
