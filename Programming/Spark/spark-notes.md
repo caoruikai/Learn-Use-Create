@@ -1,10 +1,10 @@
-# Set up Pyspark Environment and Pycharm
+# Set up Pyspark Environment on local linux-like machine
 
-1. Install pyspark using conda: `conda create -n spark pyspark numpy jupyter`;
+A pyspark program on a local machine needs to find 4 things: `java` location, `pyspark` location, `spark` location, `python` used for the driver node
 
-2. Download and untar spark: `tar xvf spark-2.3.1-bin-hadoop2.7.tgz`;
+1. Download and untar spark: `tar xvf spark-2.3.1-bin-hadoop2.7.tgz`;
 
-3. Uninstall too old or new version of Java:
+2. Uninstall too old or new version of Java:
 
 ```shell
 sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
