@@ -1,4 +1,4 @@
-# Set up Pyspark Environment on local linux-like machine
+# Set up Pyspark Environment on local Mac (OSX) machine
 
 A pyspark program on a local machine needs to find 4 things: `java` location, `pyspark` location, `spark` location, `python` used for the driver node
 
@@ -13,9 +13,9 @@ sudo rm -fr ~/Library/Application\ Support/Oracle/Java
 sudo rm -fr /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk
 ```
 
-4. Download and install JDK-8 using the graphical installer;
+3. Download and install JDK-8 using the graphical installer;
 
-5. Change environment variables in `.bash_profile` and then `source .bash_profile`:
+4. Change environment variables in `.bash_profile` and then `source .bash_profile`:
 
 ```shell
 # Added to use the installed Java
@@ -24,13 +24,13 @@ export PATH=$JAVA_HOME:$PATH
 
 # Added for Pyspark
 export SPARK_HOME=$HOME/spark-2.3.1-bin-hadoop2.7
-export PYSPARK_PYTHON=$HOME/anaconda3/envs/spark/bin/python3
-export PYSPARK_DRIVER_PYTHON=$HOME/anaconda3/envs/spark/bin/ipython3
+export PYSPARK_PYTHON=$HOME/anaconda3/bin/python3
+export PYSPARK_DRIVER_PYTHON=$HOME/anaconda3/bin/ipython3
 alias pysparknote="export PYSPARK_DRIVER_PYTHON=jupyter; export PYSPARK_DRIVER_PYTHON_OPTS=lab; pyspark"
-export PATH=$SPARK_HOME:$PATH
+export PATH=$:$SPARK_HOME:$PATH
 ```
 
-6. Copy the log property template and change the log output settings, make `log4j.rootCategory=ERROR`
+5. Copy the log property template and change the log output settings, make `log4j.rootCategory=ERROR`
 
 ```bash
 cp $SPARK_HOME/conf/log4j.properties.template log4j.properties
