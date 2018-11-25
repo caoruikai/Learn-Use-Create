@@ -1,4 +1,4 @@
-# How to install Hadoop in stand alone mode on a local linux (ubuntu 18.04) machine
+# How to install Hadoop in stand alone mode on a local linux machine (ubuntu 18.04)
 
 1. Install Java
 

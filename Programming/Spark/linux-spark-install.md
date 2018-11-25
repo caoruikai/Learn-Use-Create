@@ -1,17 +1,22 @@
-# Set up Pyspark Environment on local Mac (OSX) machine
+# How to install Spark in stand alone mode for a local linux machine (ubuntu 18.04)
 
-1. Uninstall too old or new version of Java:
+1. Install Java
 
     ```shell
-    sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
-    sudo rm -fr /Library/PreferencePanes/JavaControlPanel.prefPane
-    sudo rm -fr ~/Library/Application\ Support/Oracle/Java
-    sudo rm -fr /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk
+    sudo apt update # update package list
+    sudo apt install default-jdk # install OpenJDK
+    java -version # check java version
     ```
+    
+2. Install Scala
 
-2. Download and install JDK-8 using the graphical installer;
-
-3. Install Spark
+    ```shell
+    sudo apt update
+    sudo apt install scala
+    scala -version
+    ```
+    
+2. Install Spark
 
     1. Go to [website of Spark](https://spark.apache.org/) -> `Download` -> `Version`(e.g. 2.4.0) -> `download spark`, then copy the download link.
     
@@ -31,38 +36,36 @@
         tar -xzvf spark-2.4.0-bin-hadoop2.7.tgz
         sudo mv spark-2.4.0-bin-hadoop2.7 /usr/local/spark
         ```
-
-4. Change environment variables in `.bash_profile` and then `source .bash_profile`:
+3. Configure Spark by adding the following lines in `~/.bashrc` and then `source ~/.bashrc`:
 
     ```shell
-    # Added for Pyspark
-    export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/
-    export SPARK_HOME=$HOME/spark-2.3.1-bin-hadoop2.7
+    export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+    export SPARK_HOME=/usr/local/spark
     export PYSPARK_PYTHON=$HOME/anaconda3/bin/python3
     export PYSPARK_DRIVER_PYTHON=$HOME/anaconda3/bin/ipython3
-    alias pysparknote="export PYSPARK_DRIVER_PYTHON=jupyter; export PYSPARK_DRIVER_PYTHON_OPTS=lab; pyspark"
+    alias pysparklab="export PYSPARK_DRIVER_PYTHON=jupyter; export PYSPARK_DRIVER_PYTHON_OPTS=lab; pyspark"
     export PATH=$SPARK_HOME/bin:$PATH
     ```
 
-5. (Optional) Copy the log property template and change the log output settings, make `log4j.rootCategory=ERROR`
+4. (Optional) Copy the log property template and change the log output settings, make `log4j.rootCategory=ERROR`
 
     ```bash
     cp $SPARK_HOME/conf/log4j.properties.template log4j.properties
     ```
 
-This is equivalent to add the configuartion in the python script:
+    This is equivalent to add the configuartion in the python script:
 
-    ```python
+    ```Python
     sc = spark.sparkContext
     sc.setLogLevel('ERROR')
     ```
+    
+7. Test PySpark by `spark-submit` the following script:
 
-6. Test PySpark by `spark-submit` the following script:
-
-```python
-# Start pyspark via provided command
-import pyspark
-# Below code is Spark 2+
-spark = pyspark.sql.SparkSession.builder.appName('test').getOrCreate()
-print(spark.range(10).collect())
-```
+    ```python
+    # Start pyspark via provided command
+    import pyspark
+    # Below code is Spark 2+
+    spark = pyspark.sql.SparkSession.builder.appName('test').getOrCreate()
+    print(spark.range(10).collect())
+    ```
