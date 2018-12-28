@@ -10,4 +10,4 @@ Future topics:
 
 - web crawling
 
-- Calendar Methodologies
+- Calendar Methodologies and Astronomy
