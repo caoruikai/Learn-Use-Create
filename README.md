@@ -9,3 +9,5 @@ Future topics:
 - Spark agg and windows
 
 - web crawling
+
+- Calendar Methodologies
