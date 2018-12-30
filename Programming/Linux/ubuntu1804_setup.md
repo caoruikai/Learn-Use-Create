@@ -42,6 +42,15 @@ ssh-add ~/.ssh/id_rsa
 
 3. Reboot
 
+## Alternative way to install Nvidia driver
+
+```shell
+sudo add-apt-repository ppa:graphics-drivers/ppa 
+sudo apt-get update 
+sudo apt-get install nvidia-390
+sudo add-apt-repository --remove ppa:graphics-drivers/ppa
+```
+
 ## Install Sogou input
 
 From [this blog](https://www.jianshu.com/p/c936a8a2180e)
