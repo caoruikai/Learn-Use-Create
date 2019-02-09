@@ -28,3 +28,5 @@ patch:
 3. Deploy Rime.
 
 4. When typing for the first time using Rime, press `Control+\``. Choose`朙月拼音-简化字`.
+
+5. Make sure English input is dafault (for Linux and Windows).
