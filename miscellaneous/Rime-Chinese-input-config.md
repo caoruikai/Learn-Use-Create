@@ -30,3 +30,9 @@ patch:
 4. When typing for the first time using Rime, press `Control+\``. Choose`朙月拼音-简化字`.
 
 5. Make sure English input is dafault (for Linux and Windows).
+
+6. To keep consistency, change the switching key between input methods to:
+
+  - Ubuntu / Windows: `Super+space`
+  
+  - MacOS: `Command+space`
