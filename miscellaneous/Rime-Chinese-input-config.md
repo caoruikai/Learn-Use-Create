@@ -4,11 +4,11 @@ I peronally don't like to change a lot of useless configs, the only annoying def
 
 1. Add a patch yaml config file `default.custom.yaml` to correct path:
 
-    - For Linux (Ubuntu 18.04, ibus-rime):  `vim ~/.config/ibus/rime`
+    - For Linux (Ubuntu 18.04, ibus-rime):  `vim ~/.config/ibus/rime/default.custom.yaml`
   
-    - For MacOS (El Captain, 鼠须管): `vim ~/Library/Rime"`
+    - For MacOS (El Captain, 鼠须管): `vim ~/Library/Rime/default.custom.yaml"`
   
-    - For Windows 10 (小狼毫）: `notepad %APPDATA%\Rime`
+    - For Windows 10 (小狼毫）: `notepad %APPDATA%\Rime\default.custom.yaml`
   
 2. Write the following into the yaml file to stop using `Shift` to toggle between Chinese and English:
 
