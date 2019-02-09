@@ -4,11 +4,11 @@ I peronally don't like to change a lot of useless configs, the only annoying def
 
 1. Add a patch yaml config file `default.custom.yaml` to correct path:
 
-  - For Linux (Ubuntu 18.04, ibus-rime):  `~/.config/ibus/rime`
+  - For Linux (Ubuntu 18.04, ibus-rime):  `vim ~/.config/ibus/rime`
   
-  - For MacOS (El Captain, 鼠须管): `"/Library/Input Methods/Squirrel.app/Contents/SharedSupport/"`
+  - For MacOS (El Captain, 鼠须管): `vim ~/Library/Rime"`
   
-  - For Windows 10 (小狼毫）:
+  - For Windows 10 (小狼毫）: `notepad %APPDATA%\Rime`
   
 2. Write the following into the yaml file to stop using `Shift` to toggle between Chinese and English:
 
@@ -26,6 +26,10 @@ patch:
 ```
 
 3. Deploy Rime.
+
+  - For Linux and MacOS, click the icon on menu bar, and then click `deploy` or `部署`.
+  
+  - Windows, there is `小狼毫重新部署` in start memu.
 
 4. When typing for the first time using Rime, press `Control+\``. Choose`朙月拼音-简化字`.
 
