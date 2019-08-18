@@ -7,36 +7,37 @@
     sudo apt install default-jdk # install OpenJDK
     java -version # check java version
     ```
-    
+
 2. Install Scala
 
-    ```shell
-    sudo apt update
-    sudo apt install scala
-    scala -version
-    ```
-    
-2. Install Spark
+   ```shell
+   sudo apt-get remove scala-library scala
+   sudo wget www.scala-lang.org/files/archive/scala-2.12.8.deb
+   sudo dpkg -i scala-2.12.8.deb
+   ```
 
-    1. Go to [website of Spark](https://spark.apache.org/) -> `Download` -> `Version`(e.g. 2.4.0) -> `download spark`, then copy the download link.
-    
-    2. Download: `wget https://www-us.apache.org/dist/spark/spark-2.4.0/spark-2.4.0-bin-hadoop2.7.tgz`.
-    
+3. Install Spark
+
+    1. Go to [website of Spark](https://spark.apache.org/) -> `Download` -> `Version`(e.g. 2.4.3) -> `download spark`, then copy the download link.
+
+    2. Download: `wget https://www-us.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz`.
+
     3. Check the downloaded file
-    
-        1. Click `signatures and checksum`, then copy the link of `spark-2.4.0-bin-hadoop2.7.tgz.sha512`.
-        
-        2. Download the checksum file: `wget https://archive.apache.org/dist/spark/spark-2.4.0/spark-2.4.0-bin-hadoop2.7.tgz.sha512`.
-        
-        3. Run the verification: `shasum -a 512 spark-2.4.0-bin-hadoop2.7.tgz` and compare with the `SHA512` line of `spark-2.4.0-bin-hadoop2.7.tgz.sha512`.
-        
-    4. Install Hadoop
-    
+
+        1. Click `signatures and checksum`, then copy the link of `spark-2.4.3-bin-hadoop2.7.tgz.sha512`.
+
+        2. Download the checksum file: `wget https://archive.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz.sha512`.
+
+        3. Run the verification: `shasum -a 512 spark-2.4.3-bin-hadoop2.7.tgz` and compare with the `SHA512` line of `spark-2.4.3-bin-hadoop2.7.tgz.sha512`.
+
+    4. Install Spark
+
         ```shell
-        tar -xzvf spark-2.4.0-bin-hadoop2.7.tgz
-        sudo mv spark-2.4.0-bin-hadoop2.7 /usr/local/spark
+        tar -xzvf spark-2.4.3-bin-hadoop2.7.tgz
+        sudo mv spark-2.4.3-bin-hadoop2.7 /usr/local/spark
         ```
-3. Configure Spark by adding the following lines in `~/.bashrc` and then `source ~/.bashrc`:
+
+4. Configure Spark by adding the following lines in `~/.bashrc` and then `source ~/.bashrc`:
 
     ```shell
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
@@ -47,7 +48,7 @@
     export PATH=$SPARK_HOME/bin:$PATH
     ```
 
-4. (Optional) Copy the log property template and change the log output settings, make `log4j.rootCategory=ERROR`
+5. (Optional) Copy the log property template and change the log output settings, make `log4j.rootCategory=ERROR`
 
     ```bash
     cp $SPARK_HOME/conf/log4j.properties.template log4j.properties
@@ -59,8 +60,8 @@
     sc = spark.sparkContext
     sc.setLogLevel('ERROR')
     ```
-    
-7. Test PySpark by `spark-submit` the following script:
+
+6. Test PySpark by `spark-submit` the following script:
 
     ```python
     # Start pyspark via provided command
