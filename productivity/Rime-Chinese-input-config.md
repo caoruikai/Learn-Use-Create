@@ -12,18 +12,18 @@ I peronally don't like to change a lot of useless configs, the only annoying def
   
 2. Write the following into the yaml file to stop using `Shift` to toggle between Chinese and English:
 
-```yaml
-patch:
-  ascii_composer:
-    good_old_caps_lock: true
-    switch_key:
-      Shift_L: noop
-      Shift_R: noop
-      Control_L: noop
-      Control_R: noop
-      Caps_Lock: clear
-      Eisu_toggle: clear
-```
+   ```yaml
+   patch:
+     ascii_composer:
+       good_old_caps_lock: true
+       switch_key:
+         Shift_L: noop
+         Shift_R: noop
+         Control_L: noop
+         Control_R: noop
+         Caps_Lock: clear
+         Eisu_toggle: clear
+   ```
 
 3. Deploy Rime.
 
