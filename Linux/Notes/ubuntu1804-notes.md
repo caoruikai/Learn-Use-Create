@@ -75,3 +75,23 @@ fcitx-config-gtk3 # 打开 Fcitx 输入法配置
 `fcitx设置 >>附加组件>>勾选高级 >>取消经典界面`
 
 `Configure>>  Addon  >>Advanced>>Classic`
+
+## Package Management
+
+- Add a ppa: `sudo add-apt-repository ppa:whatever/ppa`
+
+- Remove a ppa: `sudo add-apt-repository --remove ppa:whatever/ppa`
+
+- Install or upgrade a package `sudo apt install <package-name>`
+
+- Update all packages information: `sudo apt update`
+
+- Upgrade all packages `sudo apt upgrade`
+
+- Find an installed package `dpkg -l <package-name-w/o-wild-card>`
+
+- Uninstall an package but keep all configuration file `sudo apt remove <package-name>`
+
+- Uninstall an package and delete all configuration file `sudo apt purge <package-name>`
+
+- Clean dependencies `sudo apt autoremove`
