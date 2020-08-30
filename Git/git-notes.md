@@ -19,3 +19,15 @@
 This diagram was created using Google Slides at: [Git-Google-Slides](https://docs.google.com/presentation/d/1hIsrSsnY0rxCVWh9VENCWSYTLcxNb-vYsNr74JlSeFA/edit#slide=id.g5cd04cdf50_0_37)
 
 ![File in Git](git_file_life.png)
+
+## Git on Windows
+
+### Force type of line breaker
+
+`git config --global core.autocrlf false`
+
+## Useful Commands & Operations
+
+### Squash commits
+
+[Video Tutorial for Squash](https://www.youtube.com/watch?v=V5KrD7CmO4o)

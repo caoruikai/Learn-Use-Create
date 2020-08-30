@@ -95,3 +95,26 @@ fcitx-config-gtk3 # 打开 Fcitx 输入法配置
 - Uninstall an package and delete all configuration file `sudo apt purge <package-name>`
 
 - Clean dependencies `sudo apt autoremove`
+
+## Mouse Sensitivity Setup
+
+1. Find the mouse device by listing all usb devices: `xinput list`. 
+
+2. List properties of the device: `xinput list-props <device-index>`. The device should have two properties: `Coordinate Transformation Matrix` and `Accel Speed`.
+
+3. Increase the `Accel Speed` up to 1: `xinput set-prop '<device-name>'(or device index) 'Accel Speed'(or property index) 1`.
+
+4. If the mouse speed is still too slow, update the `Coordinate Transformation Matrix`: `xinput set-prop '<device-name>'(or device index) 'Coordinate Transformation Matrix'(or property index) 1.5 0 0 0 1.5 0 0 0 1`. Try different x and y coordinates (position with value 1.5).
+
+5. Discussion and references:
+
+    - https://unix.stackexchange.com/questions/90572/how-can-i-set-mouse-sensitivity-not-just-mouse-acceleration
+
+    - https://wiki.ubuntu.com/X/InputCoordinateTransformation
+
+## Boot order
+
+1. Remember the index of images, e.g. Ubuntu: 0, Windows 2.
+2. Open the default grub setting: `sudo vim /etc/default/grub`
+3. Update the `GRUB_DEFAULT=0` to the index you want (e.g. 2 for Windows)
+4. `sudo update-grub`
