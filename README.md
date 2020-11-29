@@ -1,6 +1,6 @@
-# Tech-Notes
+# Learning-Notes
 
-Notes on tech stuff: Data, Mathematics, Statistics, Algorithms, Developing...
+Notes on learning stuff: Data, Mathematics, Statistics, Algorithms, Developing...
 
 Future topics:
 
