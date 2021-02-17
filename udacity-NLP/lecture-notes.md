@@ -1,5 +1,7 @@
 # Useful Resources
 
+- https://classroom.udacity.com/nanodegrees/nd892-ent/dashboard/overview
+
 ## Books
 - http://aima.cs.berkeley.edu/
 - https://home.cs.colorado.edu/~martin/SLP/
@@ -8,6 +10,9 @@
 - https://arxiv.org/pdf/1104.2086.pdf
 - https://www.cs.cmu.edu/~roni/papers/survey-slm-IEEE-PROC-0004.pdf
 - https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
+- https://onlinelibrary.wiley.com/doi/epdf/10.1207/s15516709cog1402_1
+- http://www.bioinf.jku.at/publications/older/2604.pdf
+- https://arxiv.org/pdf/1511.06939.pdf
 
 ## Knowledge
 - https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
@@ -15,10 +20,26 @@
 - https://spacy.io/usage/linguistic-features
 - https://en.wikipedia.org/wiki/Forward_algorithm
 - https://en.wikipedia.org/wiki/Viterbi_algorithm
+- https://en.wikipedia.org/wiki/Vanishing_gradient_problem
+- https://en.wikipedia.org/wiki/Time_delay_neural_network
+- https://en.wikipedia.org/wiki/Recurrent_neural_network#Elman_networks_and_Jordan_networks
+- https://www.ics.uci.edu/~pjsadows/notes.pdf
+- http://www.columbia.edu/itc/sipa/math/calc_rules_multivar.html
+- https://tutorial.math.lamar.edu/pdf/Common_Derivatives_Integrals.pdf
+- http://blog.datumbox.com/tuning-the-learning-rate-in-gradient-descent/
+- https://cs231n.github.io/neural-networks-3/
 
 ## Softwares
 - https://pomegranate.readthedocs.io/en/latest/index.html
 - https://www.nltk.org/
+- https://radimrehurek.com/gensim/index.html
+
+## Usecases
+- https://engineering.fb.com/2016/10/25/ml-applications/building-an-efficient-neural-language-model-over-a-billion-words/
+- https://aws.amazon.com/lex/faqs/
+- http://www.cs.toronto.edu/~graves/handwriting.cgi?text=My+name+is+Luka&style=&bias=0.15&samples=3
+- https://www.youtube.com/watch?v=0FW99AQmMc8
+- https://openai.com/blog/dota-2/
 
 
 # Part 1 - Introduction
@@ -110,7 +131,7 @@
 - document-term matrix
     - columns: terms in vocabulary in some order. Each column is a term
     - rows: each document is a row
-    - values: term frequency in the document
+    - values: term frequency in the document, or P(t|d) - probability of term occurence in each document
 - compare documents (rows)
     - dot product between each row = a . b: a measure of similarity between documents with a flaw: since only overlapping terms contribute to the calculation, both similar and distinct pairs of documents may have same dot product.
     - cosine similarity = a . b / ||a||.||b||: cosine of the angle between the two vectors (rows)
@@ -141,3 +162,47 @@
 - a way to visualize high dimentional space
 
 ## Topic Modeling
+
+- bag of words: P(t|d) - probability of term occurence in each document
+- Latent Variable: add a topic (z) layer between document and term: P(t|z) and P(z|d)
+- Matices: the matrix of P(t|d) equals the multiplication of matix P(t|z) and P(z|d)
+
+### Latent Dirichlet Allocation
+- n topics, m terms
+- Assumptions
+    - P(t|z) follows a Dirichlet distribution with n parameters
+    - P(z|d) follows a Dirichlet distribution with m parameters
+- Algorithm
+    - Initialize distributions of P(t|z) and P(z|d).
+    - For each document in the training set, calculate the topic distribution.
+    - Simulate a topic sequence of length l from P(z|d) for each document. l is a parameter with a Poisson distribution.
+    - For each topic in a simulated sequence, simulate a term from P(t|z).
+    - As a result, for each document, a fake document was simulated.
+    - Calculate the error of the similarity between fake documents and true documents.
+    - Adjust the parameters to move towards maximum similarity (how?)
+    
+
+# Extracurricular
+
+## Feedforward Neural Network
+- output Y = F(x, W)
+- static mapping: fixing x and W, Y is fixed.
+- training
+    - feedforward: given x and W, calculate predicted output and error
+        - for each layer h(p) = phi(h(p-1).W(p-1))
+        - bias input: 1 as a constant input
+    - backpropagation: update W to minimize the error
+        - for each group of weights W[t] = W[t-1] + alpha * (- gradient of error w.r.t W)
+        - for weight other than the last layer weights, use chain rule to compute gradient
+- activation function phi: allow nonlinear relationship between inputs and outputs
+    - hyperbolic tangent function: [-1,1]
+    - sigmoid function: [0,1]
+    - ReLU function: [0,1]
+- regularization: dropout
+- mini batch training: updating the weights every N steps by using the means of all N deltas
+
+## RNN
+
+- Elman Network (Simple RNN): include output of hidden layer from previous time point as input neurons
+
+- backpropagation through time (BPTT)
