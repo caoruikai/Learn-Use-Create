@@ -7,27 +7,34 @@
 - https://home.cs.colorado.edu/~martin/SLP/
 
 ## Papers
-- https://arxiv.org/pdf/1104.2086.pdf
-- https://www.cs.cmu.edu/~roni/papers/survey-slm-IEEE-PROC-0004.pdf
-- https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
-- https://onlinelibrary.wiley.com/doi/epdf/10.1207/s15516709cog1402_1
-- http://www.bioinf.jku.at/publications/older/2604.pdf
-- https://arxiv.org/pdf/1511.06939.pdf
+- [PoS Tagset](https://arxiv.org/pdf/1104.2086.pdf)
+- [Stats Language Models](https://www.cs.cmu.edu/~roni/papers/survey-slm-IEEE-PROC-0004.pdf)
+- [LDA](https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf)
+- [RNN](https://onlinelibrary.wiley.com/doi/epdf/10.1207/s15516709cog1402_1)
+- [RNN Recommender](https://arxiv.org/pdf/1511.06939.pdf)
+- [LSTM](http://www.bioinf.jku.at/publications/older/2604.pdf)
+- [Gradient Clipping](https://arxiv.org/abs/1211.5063)
 
 ## Knowledge
-- https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
-- https://en.wikipedia.org/wiki/Brown_Corpus
-- https://spacy.io/usage/linguistic-features
-- https://en.wikipedia.org/wiki/Forward_algorithm
-- https://en.wikipedia.org/wiki/Viterbi_algorithm
-- https://en.wikipedia.org/wiki/Vanishing_gradient_problem
-- https://en.wikipedia.org/wiki/Time_delay_neural_network
-- https://en.wikipedia.org/wiki/Recurrent_neural_network#Elman_networks_and_Jordan_networks
-- https://www.ics.uci.edu/~pjsadows/notes.pdf
-- http://www.columbia.edu/itc/sipa/math/calc_rules_multivar.html
-- https://tutorial.math.lamar.edu/pdf/Common_Derivatives_Integrals.pdf
-- http://blog.datumbox.com/tuning-the-learning-rate-in-gradient-descent/
-- https://cs231n.github.io/neural-networks-3/
+- [Penn Treebank PoS](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html)
+- [Brown Corpus](https://en.wikipedia.org/wiki/Brown_Corpus)
+- [Spacy: lingustic features](https://spacy.io/usage/linguistic-features)
+- [Wikipedia: Forward Algorithm](https://en.wikipedia.org/wiki/Forward_algorithm)
+- [Wikipedia: Viterbi Algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm)
+- [Wikipedia: Vanishing Gradient](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)
+- [Wikipedia: Time Delay NN](https://en.wikipedia.org/wiki/Time_delay_neural_network)
+- [Wikipedia: RNN](https://en.wikipedia.org/wiki/Recurrent_neural_network#Elman_networks_and_Jordan_networks)
+- [Backpropagation](https://www.ics.uci.edu/~pjsadows/notes.pdf)
+- [Calculus Rules](http://www.columbia.edu/itc/sipa/math/calc_rules_multivar.html)
+- [Common Derivatives Integrals](https://tutorial.math.lamar.edu/pdf/Common_Derivatives_Integrals.pdf)
+- [Learning Rate in Gradient Descent](http://blog.datumbox.com/tuning-the-learning-rate-in-gradient-descent/)
+- [CS321n: CNN for Vision Recognition](https://cs231n.github.io/neural-networks-3/)
+- [Andrej Karpathy's lecture on RNNs and LSTMs from CS231n](https://www.youtube.com/watch?v=iX5V1WpxxkY)
+- [Edwin Chen's LSTM post](http://blog.echen.me/2017/05/30/exploring-lstms/)
+- [Chris Olah's LSTM post](http://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+- [LSTM Tutorial](https://web.archive.org/web/20190106151528/https://skymind.ai/wiki/lstm)
+- [GRU](http://www.cs.toronto.edu/~guerzhoy/321/lec/W09/rnn_gated.pdf)
+- [Wikipedia: Zipf's Law](https://en.wikipedia.org/wiki/Zipf%27s_law)
 
 ## Softwares
 - https://pomegranate.readthedocs.io/en/latest/index.html
@@ -40,6 +47,9 @@
 - http://www.cs.toronto.edu/~graves/handwriting.cgi?text=My+name+is+Luka&style=&bias=0.15&samples=3
 - https://www.youtube.com/watch?v=0FW99AQmMc8
 - https://openai.com/blog/dota-2/
+
+## Data
+- http://ai.stanford.edu/~amaas/data/sentiment/
 
 
 # Part 1 - Introduction
@@ -206,3 +216,30 @@
 - Elman Network (Simple RNN): include output of hidden layer from previous time point as input neurons
 
 - backpropagation through time (BPTT)
+    - update W_s - the weight matrix between hidden states: accumulative derivatives
+    - update W_x - the weight between input and states: accumulative derivatives
+
+## LSTM
+
+- LTM: long term memory
+
+- STM: short term memory
+
+- E: event/observation
+
+- learn gate
+    - input: STM, E
+    - output: N * i where N = tanh(W(STM, E)), i = sigmoid(W(STM, E))
+
+- forget gate
+    - input: LTM, STM, E
+    - output: f * LTM where f = sigmoid(W(STM, E))
+
+- remember gate
+    - input: outputs of learn & forget gate
+    - output: new LTM = summation of outputs from learn & forget gate
+
+- use gate
+    - input outputs from learn & forget gate
+    - output: new STM = U * V where U = tanh(W(out of forget gate)) and V = sigmoid(W(output of learn gate, E))
+    
