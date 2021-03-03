@@ -5,6 +5,7 @@
 ## Books
 - http://aima.cs.berkeley.edu/
 - https://home.cs.colorado.edu/~martin/SLP/
+- https://d2l.ai/index.html
 
 ## Papers
 - [PoS Tagset](https://arxiv.org/pdf/1104.2086.pdf)
@@ -14,6 +15,18 @@
 - [RNN Recommender](https://arxiv.org/pdf/1511.06939.pdf)
 - [LSTM](http://www.bioinf.jku.at/publications/older/2604.pdf)
 - [Gradient Clipping](https://arxiv.org/abs/1211.5063)
+- [Bahdanau Attention](https://arxiv.org/abs/1409.0473)
+- [Luong Attention](https://arxiv.org/abs/1508.04025)
+- [Xu Attention-Image-Caption 2015](http://proceedings.mlr.press/v37/xuc15.pdf)
+- [Anderson Attention-Image-Caption 2018](https://arxiv.org/pdf/1707.07998.pdf)
+- [Yu Attention-Video-Caption 2016](https://www.cv-foundation.org/openaccess/content_cvpr_2016/app/S19-04.pdf)
+- [Yeung Video-Action-Label 2017](https://arxiv.org/pdf/1507.05738.pdf)
+- [Teney-VisualQuestion-2017](https://arxiv.org/pdf/1708.02711.pdf)
+- [Wu-VisualQuestionSurvey-2016](https://arxiv.org/pdf/1607.05910.pdf)
+- [Wu-GoogleTranslate-2016](https://arxiv.org/pdf/1609.08144.pdf)
+- [Nallapati-TextSummarySeq2Seq-2016](https://arxiv.org/pdf/1602.06023.pdf)
+- [Vaswani-Transformer-2017](https://arxiv.org/abs/1706.03762)
+
 
 ## Knowledge
 - [Penn Treebank PoS](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html)
@@ -35,6 +48,14 @@
 - [LSTM Tutorial](https://web.archive.org/web/20190106151528/https://skymind.ai/wiki/lstm)
 - [GRU](http://www.cs.toronto.edu/~guerzhoy/321/lec/W09/rnn_gated.pdf)
 - [Wikipedia: Zipf's Law](https://en.wikipedia.org/wiki/Zipf%27s_law)
+- [Attention is All You Need](https://www.youtube.com/watch?v=rBCqOTEfxvg)
+- [Cheng-LSTMReading-2016](https://arxiv.org/abs/1601.06733)
+- [Example-based_machine_translation](https://en.wikipedia.org/wiki/Example-based_machine_translation)
+- [Statistical_machine_translation](https://en.wikipedia.org/wiki/Statistical_machine_translation)
+- [Rule-based_machine_translation](https://en.wikipedia.org/wiki/Rule-based_machine_translation)
+- [bidirectional-lstm](https://machinelearningmastery.com/develop-bidirectional-lstm-sequence-classification-python-keras/)
+- [word2vec](https://jalammar.github.io/illustrated-word2vec/)
+- [word2vec-skip-gram](http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/)
 
 ## Softwares
 - https://pomegranate.readthedocs.io/en/latest/index.html
@@ -50,6 +71,11 @@
 
 ## Data
 - http://ai.stanford.edu/~amaas/data/sentiment/
+- https://cocodataset.org/
+- [Stats Machine Translation](http://www.statmt.org/)
+
+## Blogs
+- http://jalammar.github.io/
 
 
 # Part 1 - Introduction
@@ -171,7 +197,7 @@
 - t distributed stochastic neighbor embedding
 - a way to visualize high dimentional space
 
-## Topic Modeling
+## Lesson 2 - Topic Modeling
 
 - bag of words: P(t|d) - probability of term occurence in each document
 - Latent Variable: add a topic (z) layer between document and term: P(t|z) and P(z|d)
@@ -190,7 +216,45 @@
     - As a result, for each document, a fake document was simulated.
     - Calculate the error of the similarity between fake documents and true documents.
     - Adjust the parameters to move towards maximum similarity (how?)
-    
+
+## Lesson 3 - Sentiment Analysis
+
+Classification between good and bad by:
+
+- classification algorithms
+- RNN & LSTM to consider order of words
+
+## Lesson 4 - Sequence to Sequence
+
+- To build a translation machine or a chatbot, one needs a RNN that use a sequence as the input, and output another sequence (at the same time or after a time period of delay).
+
+- Architectures: input -> encoder -> context(state) vector -> decoder -> output where encoder and decoder are two different RNNs
+
+- encoder: every word input into encoder and a vector was generated; For next iteration, next word together with previous vector was input into encoder and a new vector was generated. When all words exhausted in a sequence (sentence), the final vector (as context) was input into decoder.
+
+## Lesson 5 - Attention used in Sequence to Sequence
+
+- Encoder: the encoder in StoS only outputs one context vector; while attention version outputs all vectors corresponding to all words.
+
+- Attention Decoders were able to use all vectors from encoders to generate output, and can adjust the order of sequence as needed.
+
+- A score is assigned to each vector and all scores are normalized using softmax function. A final vector is the weighted average of all vector with normalized vector as weights.
+
+- Choices of scoring functions: additive (Bahdanau) attention v.s. multiplicative (Luong) attention
+
+- multiplicative scoring function
+    - dot product: dot product of decoder hidden state and each encoder hidden state (only applicable when both are of the same dimension)
+    - general: add a weight matrix between the product of hidden states, which allows difference between the dimensions of encoder and decoder hidden space
+    - concat: concatenate encoder and decoder vectors and input them into a single layer feed forward NN and output scores
+
+- Transformer
+    - encoder
+        - feed-forward layer
+        - self-attention layer
+    - decoder
+        - feed-forward layer
+        - encoder-decoder attention
+        - self-attention layer
 
 # Extracurricular
 
