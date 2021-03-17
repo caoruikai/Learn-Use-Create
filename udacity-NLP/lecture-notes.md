@@ -1,6 +1,16 @@
 # Useful Resources
+- [my google drive url with saved materials](https://drive.google.com/drive/u/0/folders/1A513ghIpAMj84QkKmrdQZeoz-fP4UjDa)
 
+## Course Site & Repo
 - https://classroom.udacity.com/nanodegrees/nd892-ent/dashboard/overview
+- https://github.com/udacity/AIND-VUI-Lab-Voice-Data
+- https://github.com/udacity/NLP-Exercises
+- https://github.com/udacity/AIND-VUI-Capstone
+- https://github.com/udacity/AIND-VUI-Alexa
+- https://github.com/udacity/artificial-intelligence
+- https://github.com/udacity/hmm-tagger
+- https://github.com/udacity/AIND-NLP
+- https://github.com/udacity/deep-learning
 
 ## Books
 - http://aima.cs.berkeley.edu/
@@ -26,6 +36,19 @@
 - [Wu-GoogleTranslate-2016](https://arxiv.org/pdf/1609.08144.pdf)
 - [Nallapati-TextSummarySeq2Seq-2016](https://arxiv.org/pdf/1602.06023.pdf)
 - [Vaswani-Transformer-2017](https://arxiv.org/abs/1706.03762)
+- [Chung GRU-vs-LSTM-2014](https://arxiv.org/pdf/1412.3555v1.pdf)
+- [Narang-SpeechFeatureSurvey-2015](https://www.ijcsmc.com/docs/papers/March2015/V4I3201545.pdf)
+- [Graves-CTC-2006](http://www.cs.toronto.edu/~graves/icml_2006.pdf)
+- [Baidu-DeepSpeech2-2015](https://arxiv.org/pdf/1512.02595v1.pdf)
+- [Liu-gramCTC-2017](https://arxiv.org/pdf/1703.00096.pdf)
+- [Miao-ASRDNN-2015](https://arxiv.org/pdf/1507.08240.pdf)
+- [Graves-ASRbidirectLSTM-2013](https://www.cs.toronto.edu/~graves/asru_2013.pdf)
+- [Zhang-ASRCNN-2017](https://arxiv.org/pdf/1701.02720.pdf)
+- [Oord-wavenet-2016](https://arxiv.org/abs/1609.03499)
+- [Gal-dropoutRNN-2015](https://arxiv.org/abs/1512.05287)
+- [Graves-ASRRNN-2013](http://www.cs.toronto.edu/~hinton/absps/DRNN_speech.pdf)
+- [Laurent-RNNBatchNormal-2015](https://arxiv.org/pdf/1510.01378.pdf)
+- [Google-RawWaveform-2015](https://www.ee.columbia.edu/~ronw/pubs/interspeech2015-waveform_cldnn.pdf)
 
 
 ## Knowledge
@@ -56,11 +79,52 @@
 - [bidirectional-lstm](https://machinelearningmastery.com/develop-bidirectional-lstm-sequence-classification-python-keras/)
 - [word2vec](https://jalammar.github.io/illustrated-word2vec/)
 - [word2vec-skip-gram](http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/)
+- [Transformer](http://jalammar.github.io/illustrated-transformer/)
+- [Visualize Embed](https://www.tensorflow.org/tensorboard/tensorboard_projector_plugin)
+- [Fourier Transformation](https://ibmathsresources.com/2014/08/14/fourier-transforms-the-most-important-tool-in-mathematics/)
+- [Wikipedia: Sound](https://en.wikipedia.org/wiki/Sound)
+- [Mitch Marcus: Speech Recognition](https://www.seas.upenn.edu/~cis391/Lectures/speech-rec.pdf)
+- [Wikipedia: Fast Fourier Transformation](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
+- [Wikipedia: Mel scale](https://en.wikipedia.org/wiki/Mel_scale)
+- [Speech Recognition Tutorial](http://www.speech.cs.cmu.edu/15-492/slides/03_mfcc.pdf)
+- [MFCC Tutorial](http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/)
+- [Wikipedia: ARPABET](https://en.wikipedia.org/wiki/ARPABET)
+- [Wikipedia: Grapheme](https://en.wikipedia.org/wiki/Grapheme)
+- [Wikipedia: Phoneme](https://en.wikipedia.org/wiki/Phoneme)
+- [Phonetics](https://en.wikipedia.org/wiki/Phonetics)
+- [BERT](https://en.wikipedia.org/wiki/BERT_(language_model))
+- [Wikipedia: Pangram](https://en.wikipedia.org/wiki/Pangram)
+- [Wikipedia: Bigram](https://en.wikipedia.org/wiki/Bigram)
+- [Wikipedia: Markov Property](https://en.wikipedia.org/wiki/Markov_property)
+- [Wikipedia: Additive Smoothing](https://en.wikipedia.org/wiki/Additive_smoothing)
+- [ASR Course](http://www.cs.cmu.edu/~bhiksha/courses/11-756.asr/spring2014/)
+- [HMM in ASR](http://www.cs.cmu.edu/~bhiksha/courses/11-756.asr/spring2014/lectures/class7-8.hmm.pdf)
+- [ASR Slides](http://www.cs.cmu.edu/~bhiksha/courses/11-756.asr/spring2014/lectures/class9.continuousspeech.pdf)
+- [ASR Slides](http://asr.cs.cmu.edu/spring2011/class21.6apr/class21.subwordunits.pdf)
+- [ASR KaiFu Lee](https://www.youtube.com/watch?v=PJ_KCTsOCrs)
+- [Baidu slides DNN ASR](https://cs.stanford.edu/~acoates/ba_dls_speech2016.pdf)
+- [Baidu speech DNN ASR](https://www.youtube.com/watch?v=g-sndkf7mCs)
+- [Miao slides DNN ASR](http://people.csail.mit.edu/jrg/meetings/CTC-Dec07.pdf)
+- [Wikipedia: Mel-frequency_cepstrum](https://en.wikipedia.org/wiki/Mel-frequency_cepstrum)
+- [Spectrograms: an Introduction](https://www.youtube.com/watch?v=_FatxGN3vAM)
+- [Keras: Optimizers](https://keras.io/api/optimizers/)
+- [Optimizers](https://ruder.io/optimizing-gradient-descent/index.html)
+- [Computational Graph](https://medium.com/tebs-lab/deep-neural-networks-as-computational-graphs-867fcaa56c9)
+
 
 ## Softwares
-- https://pomegranate.readthedocs.io/en/latest/index.html
-- https://www.nltk.org/
-- https://radimrehurek.com/gensim/index.html
+- [Pomegranate](https://pomegranate.readthedocs.io/en/latest/index.html)
+- [NLTK](https://www.nltk.org/)
+- [Gensim](https://radimrehurek.com/gensim/index.html)
+- [Python Speech Features](https://python-speech-features.readthedocs.io/en/latest/#)
+- [Scipy wavfile.read](https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.io.wavfile.read.html)
+- [CUM Sphinx Project](https://cmusphinx.github.io/)
+- [CUM ARPAnet Pronouncing Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict)
+- [CUM Lexicon](http://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/sphinxdict/cmudict_SPHINX_40)
+- [Sonic Visualizer](https://www.sonicvisualiser.org/)
+- [PySoundFile](https://pysoundfile.readthedocs.io/en/latest/)
+- [warp-CTC](https://github.com/baidu-research/warp-ctc)
+
 
 ## Usecases
 - https://engineering.fb.com/2016/10/25/ml-applications/building-an-efficient-neural-language-model-over-a-billion-words/
@@ -68,14 +132,25 @@
 - http://www.cs.toronto.edu/~graves/handwriting.cgi?text=My+name+is+Luka&style=&bias=0.15&samples=3
 - https://www.youtube.com/watch?v=0FW99AQmMc8
 - https://openai.com/blog/dota-2/
+- https://github.com/pannous/tensorflow-speech-recognition
+- https://github.com/buriburisuri/speech-to-text-wavenet
+- https://github.com/mozilla/DeepSpeech
+- https://github.com/baidu-research/ba-dls-deepspeech
+
 
 ## Data
 - http://ai.stanford.edu/~amaas/data/sentiment/
 - https://cocodataset.org/
 - [Stats Machine Translation](http://www.statmt.org/)
+- https://www.ldc.upenn.edu/
+- https://deepai.org/dataset/timit
+- http://www.openslr.org/12/
+- https://www.tensorflow.org/datasets/catalog/librispeech
+
 
 ## Blogs
 - http://jalammar.github.io/
+- http://web.science.mq.edu.au/~cassidy/
 
 
 # Part 1 - Introduction
@@ -181,6 +256,9 @@
 - transform each term into a vector with only one element as 1, all others 0
 - disadvantage: create too many dimensions since there are a lot of terms
 
+### Embedding
+- Only the ith row will be used in the weight matrix will be used when multiplied by the one-hot encoded vector prepresenting ith word. The weight matrix will not be trained in the same way as in a typical NN, but is treatied as a lookup table.
+
 ### Word2Vec
 - continuous bag of words (CBoW): use neighboring terms to predict the middle term
 - continuous skip-gram: use middle terms to predict neighboring terms
@@ -255,6 +333,74 @@ Classification between good and bad by:
         - feed-forward layer
         - encoder-decoder attention
         - self-attention layer
+
+# Part 3 - Communicating with Natrual Language
+
+## Lesson 1 - Intro to VUI (Voice User Interface)
+
+- VUI components: speech to text (speech recognition), text to text, text to speech
+- speech to text components: acoustic model, language model, accent model
+
+## Lesson 3 - Speech Recognition
+
+- ASR: automatic speech recognition
+- acoustic model: input sound, output phonetic representation
+- language model: input phonetic representation, output text
+
+### Whole process
+- traditional: speech -> sound signal -> [FFT] -> spectrogram -> [cepstral + mel analysis] -> MFCC features -> [acoustic model(HMM)] -> phonemes -> [lexical decoding] -> words -> [language model(n-gram)]-> text
+- deep learning: replace MFCC with CNN, HMM with RNN, lexicon with CTC, n-gram with NLM
+
+### challenges in ASR: 
+- noise, 
+- variability in: pitch, volume, word speed
+- ambiguities that requires language knowledge to distiguish:
+    - words that sounds alike
+    - word boundaries
+    - spelling
+    - context
+- spoken v.s. written languages
+
+### signal analysis:
+- amplitude: how loud the voice is
+- signal: sum of component frequencies
+- FFT (Fast Fourier Transform) Algorithm: decompose sound signal into component frequences in the form of spectrogram
+- spectrogram: 
+    - y axis: frequency
+    - x axis: time
+    - intensity of shades: amplitude
+
+### feature extraction
+- mel scale: what sound pitches can human distingush?
+- human voice mechanism: source/filter model
+    - source is unique to an individual
+    - filter is the articulation all use when speaking
+    - cepstral analysis: separate source and filter
+    - goal: remove source, keep filter
+- cepstral analysis + mel analysis -> 12~13 MFCC features (or up to 39 features with optional deltas)
+- MFCC feature extraction
+    - reduce dimentionality
+    - reduce noise
+
+### phonetics
+- phonectics is the study of sounds in human languages
+- phonemes: unique sound units in a certain language (39~44 in US English)
+- grapheme: unique units in a written language (26 letters + space in English)
+- arpabet: a US English phonemes set developed in 1971
+- speech -> features -> acoustic model -> phonemes -> words -> text
+- lexical decoding: the process converting phonemes into words
+
+### acoustic model
+- DTW (dynamic time warpping): calculate similarities between 2 signal
+- HMM (hidden markov model)
+
+### language model
+- input: probability distribution of possible words
+- output: most likely sequence of words
+- Considering all possible combinations of all words are expensive. Only 3-4 previous words matters in practice.
+- n-gram model: estimate proability of next words given previous n words
+
+### CTC (Connectionist Temporal Classification)
 
 # Extracurricular
 
