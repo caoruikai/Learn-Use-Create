@@ -282,15 +282,19 @@
 
 ## Directory should be viewed as a *list* of its objects
 - [Reference](https://unix.stackexchange.com/questions/21251/execute-vs-read-bit-how-do-directory-permissions-in-linux-work)
-- "read" means reading/listing all the file and sub-directory names.
-- "write" means changing the list: adding files/subdirectores, change the names of current files and subdirectories.
-- "execute" means the user can `cd` to it.
-- Assuming a user has `rxw` access to all files and subdirectories:
-    | Permission | ls (show names) | ls -l (show more info) | cd | cat file | ls subdir | update/add filename/subdirname | update file content | 
-
-- "write + execute" means changing the list itself - e.g. removing a file name from the list(directory) and renaming a file (change the list/directory). File level permission is not needed to do above actions.
-- "execute" means you can `cd` to it, making it your working directory.
-- "execute" without "write" means the files within the directoy cannot be renamed or removed even if one has "write" permission on the file. Because "rename" and "remove" involves updating the directory itself. But the content of the file can be updated if "write" permission of the file was granted.
+- `---` or `-w-`: no access.
+- `r--` or `rw-` gives the access to `ls` the directory. `ls -l` does not show more info than the names.
+- `--x` gives the access to `cd` to the directory. The following accesses depend on it:
+    - `ls`, `cd` to subdirs
+    - View file contents in the directory (`cat file`)
+    - Update file contents or the subdir itself.
+    - `cp` the files and subdirs to other directories.
+    - Execute the files in the directory.
+- `r-x` combining the accesses in `r--` and `--x`, and additionally show additional info when `ls -l`.
+- `-wx` gives access to all actions in `--x`, and additionally update the directory itself (add/remove file/subdir, `mv` files/subdir, `cp` to the same directory).
+- File permissions v.s. dir permissions
+    - Permissions to add/remove a file is controlled by the dir permission `-wx`, not the file permission. 
+    - If you do not want some users to add/remove files from a directory, set the directory permission to `r-x` for the user.
 
 ## Changing Permissions
 - `chmod`
@@ -328,6 +332,25 @@
 - `sudo chown [-R] <username>:<group-name> <filename|dirname>`: change the owner user and group of the file/dir.
 - `sudo chgrp [-R] <group-name> <filename|dirname>`: change owning group of a file/dir.
 
+## Setuid, Setgid, and Sticky bit
+- Setuid bit (4): for executable files, if setuid bit was set, then any user has the same permission to execute it as the owner.
+    - If setuid bit was set, `ls -l` will show `s` instead of `x` for executable permission bit for the user part. For example `rws` instead of `rwx`.
+    - Set setuid bit: `chmod u+s <file>`
+    - Unset setuid bit: `chomod u-s <file>`
+- Setgid bit (2): 
+    - For executable files, if setgid was set, then any group has the same permission to execute it as the owner group.
+    - For directories, if setgid was set, then all files/dirs within the directory will have the same group with the directory.
+    - If setgid was set, `ls -l` shows `s` instead of `x` for the group part.
+    - Set setgid bit: `chmod g+s <file>`
+    - Unset setgid bit: `chmod g-s <file>`
+- Sticky bit (1): when the sticky bit of a directory was set, then only the file owner, directory owner and root user can add/delete files within it.
+    - set sticky bit: `chmod +t <dir>`
+    - unset sticky bit: `chmod -t <dir>`
+- setuid, setgid, and sticky bit can be set using the summation of the octal values
+    - setuid (4), setgid (2), sticky (1)
+    - For example, to set both setgid and sticky bit: `chmod 3xxx <dir>`
+
+
 
 
 # Packages
@@ -339,6 +362,7 @@
 - System packages are also Debian packages and may conflict with user installed packages
 - Commands
     - Search: `apt search <keyword1> <keyword2> ...`
+        - Example of search installed packages: `apt search <keyword> | grep installed`.
     - Show info: `apt-cache show <package>`
     - Install: `sudo apt install <package1> <package2> ...`
     - Update package index: `sudo apt update`
@@ -534,3 +558,291 @@
 - `ncdu`: a useful tool to navigate the file system and investigate the disk usage.
     - `sudo apt install ncdu`
     - `ncdu -x`: only scan the local volumns and skipping all network mounts.
+
+## Memory Usage
+- `free -[m|g]`: shows the memory usage status.
+    - "total": total memory
+    - "used": used memory = total - free - buff/cache
+    - "free": truly free memory not used by anything
+    - "shared": memory used in tmpfs
+    - "buff/cache": memory used as kernel buffers and disk cache. Most of it can be used by applications if needed.
+    - "available": memory can be used by application if needed.
+- Linux will use a big chunk of unused memory as "buff/cache" (disk cache). Most of that amount can be released if needed.
+
+## Swap
+- Swap is a disk partition or a file that acts as RAM when the memory is saturated.
+- Check the current swap at `/etc/fstab`
+- To create and activate a swap file at `/swapfile`
+    - Create a file with fixed size: `sudo fallocate -l <size> /swapfile`
+    - Permission: `sudo chmod 0600 /swapfile`
+    - Make it a swap file: `sudo mkswap /swapfile`
+    - Add an entry to `/etc/fstab`: `/swapfile none swap sw 0 0`
+    - Activate the swap file: `sudo swapon -a`
+    - Deactivate: `sudo swapoff -a`
+- Swappiness is used to control how frequently the system starts to use swap.
+    - Default value is 60.
+    - Larger swappiness value means the system will more likely to use swap.
+        - 100 means swap is used whenever possible.
+        - 0 means swap is never used.
+    - The swappiness value is roughly proportional to the percetage of memory not used.
+    - Check the swappiness value: `cat /proc/sys/vm/swappiness`
+    - Set the swappiness temporarily (until next reboot): `sudo sysctl vm.swappiness=<value>`
+    - To set the swappiness permanentally, edit the line `vm.swappiness = <value>` in the file `/etc/sysctl.conf`.
+
+## CPU - Loading Average
+- Loading averages: Average number of tasks that were waiting for the attention from the CPU for a give time period.
+- `uptime` shows system up time and loading average over 1 minute, 5 minutes, and 15 minutes.
+- Loading average greater than the total number of cores of CPUs meaning over-loaded CPUs.
+- Loading average smaller than an usual level might indicate some processes are not running properly.
+- It is important to know the baseline of loading average of the server.
+
+## htop - manage resource usage
+- Press *u* for user menu, which allows one to select users to filter the processes.
+- `htop -d <i>` starts htop with refresh rate of i seconds.
+- If *F10* conflicts with the terminal emulator keystroke, *q* can be used to quit `htop`.
+
+
+
+# Manage Storage Volumes
+
+## View the current/added disks and partitions
+- `sudo fdisk -l`: info on volumes.
+- `dmesg --follow`: refreshed after adding a new volume.
+- `lsblk`: tree view.
+- `blkid`: print attributes like UUIDs and labels of partitions.
+
+## Creating Partition and Format
+1. `sudo fdisk <volume>` to start the program. For example, `sudo fdisk /dev/sdb`.
+    0. (optional) *m* for the help menu.
+    1. *g* or *o*: *g* to create a GUID Partition Table (GPT); *o* to create a Master Boot Record (MBR). GPT is a newer standard.
+    2. *n* to create a new partition. If MBR was chosen, primary v.s. extended partition needs to be chosen.
+    3. Choose a partition number. Press *Enter* for the default next available number.
+    4. Choose the first sector for the partition. Press *Enter* for the default `2048`.
+    5. Choose the last sector to use. If pressing *Enter* to accept the default, this partition will consist of all the free space. Type `+<i>G` to make the partition of size i Gigabyte.
+2. `sudo mkfs.ext4 /dev/sdb1`: format partition `sdb1` as `ext4` format. 
+3. (Optional) Use `e2label /dev/sdb1 <label>` to add a label to the partition.
+
+## Mount and Unmount
+- Volumes can only be mounted to an empty directroy.
+- By FHS, `/mnt` is used to mount hard drives etc., and `/media` for removable media like flash drives.
+- Assuming one would like to mount a formatted partition `/dev/sdb1` to `/mnt/vol`, here are the steps
+    1. `df -h` to check the current mounts;
+    2. `sudo mkdir /mnt/vol1` to create the directory;
+    3. `sudo mount /dev/sdb1 /mnt/vol1` to mount it; A more error-prone alternative is to add the `-t` option with the partition format: `sudo mount /sdb1 -t ext4 /mnt/vol1`;
+    4. To unmount it in the future: `sudo umount /mnt/vol`.
+- The procedure above only mounts the partition before the next reboot. To make it reboot or manage the property of the mount, use entries in the `/etc/fstab` file.
+
+## /etc/fstab file
+- Elements of each line of the file:
+    1. The name, label, or UUID (Universally Unique Identifier) of a partition.
+        - Example: `/dev/mapper/vgubuntu-root`, `UUID=xxxxxxx`, `LABEL=xxxxx`.
+        - Device names are subject to the order of the detection. For example, if hard drives are unplugged and plugged again in different order, same device may end up with different divce names.
+        - UUID is a better way to identify the devices, since it is less likely to be changed. The UUID is changed when the partition is formatted.
+        - A label of the partition can be added using `e2label /dev/sdb1 <label>`
+    2. The directory the partition mounts to.
+    3. File system type, e.g. `ext4`.
+    4. Mount options separated by commas. Common options:
+        - `errors=remount-ro` for root system tells the system to remount the partition as read-only if error occurs.
+        - `sw` is swap option.
+        - `defaults` implies a group of options:
+            - `rw`: partition can be read from and written to.
+            - `exec`: files within this partition cab be executable.
+            - `auto`: automatically mount the partition at boot time.
+            - `nouser`: only `root` is able to mount it.
+            - `async`: make the partition operates faster since it will not write everything to it in real-time.
+        - `ro`: read-only
+        - `noexec`: do not allow executable file.
+        - `noauto`: the partition is not auto mounted when `mount -a` is given (for example, at boot time). This option is useful if one would like to mount a partition only when necessary (e.g. a backup drive). After booted, the partition can be mounted manually by using `sudo mount <dir>` without the device name or UUID since the entry is in `/etc/fstab`.
+        - `users`: allow users to mount/unmount this partition.
+    5. `dump`: 1 for backup, 0 for no backup; Rarely used; Almost always 0; Can be used by a backup utility.
+    6. `pass`: order in which `fsck` checks the partitions for failures. Possible values are:
+        - 0: never checked;
+        - 1: checked first;
+        - 2: checked last.
+- Recommended steps to update the `/etc/fstab` file:
+    1. Run `blkid <device-name>` to get the UUID.
+    2. Create a directory the partition will be mounted to.
+    3. Open `/etc/fstab` with an editor.
+    4. Add a entry to the file with the correct format.
+    5. Add a useful comment before the entry starting with `#`.
+    6. Save the file with the changes.
+
+## LVM (Logical Volume Manager)
+- Volume Group (vg): container containing multiple disks.
+- Physical Volume (pv): a physical or virtual hard disk.
+- Logical Volume (lv): similar to partition, but is able to span multiple disks.
+- Package install:
+    - Check if `lvm2` is installed: `apt search lvm2 | grep installed`.
+    - Install `lvm2`: `sudo apt install lvm2`.
+- Initiate a physical volume: `sudo pvcreate <device-name>`.
+- Volume group commands:
+    - Create a volume group: `sudo vgcreate <vg-name> <pv-name>`.
+    - Display volume groups: `sudo vgdisplay`.
+    - Extend a volume group (add extra disks): `sudo vgextend <vg-name> <device-name>`.
+    - Remove a volume group: `sudo vgremove <vg-name>`
+- Logical Volume commands:    
+    - Create a logical volume: `sudo lvcreate -n <lv-name> -L <size>g <vg-name>`.
+    - Display logical volumes: `sudo lvdisplay`.
+    - Format a logical volume: `sudo mkfs.ext4 /dev/<vg-name>/<lv-name>`
+    - Mount a logical volume: `sudo mount /dev/<vg-name>/<lv-name> <dir-to-mount>`.
+    - Extend a logical volume to use i% of the free space of the group volume: 
+        - `sudo lvextend -n /dev/<vg-name>/<lv-name> -l +<i>%FREE`.
+        - `sudo lvextend -L+<i>g /dev/<vg-name>/<lv-name>`.
+    - Resize the filesystem to thenew size of logical volume: `sudo resize2fs /dev/mapper/vg--test-<lv-name>`. Note the two hyphens.
+    - Remove a logical volume: `sudo lvremove vg-test`. Only a logical volume that is not in use can be removed.
+
+## Concepts Comparison between Traditional and LVM
+| Trandition | LVM |
+| --- | --- |
+| NA | Volume Group (VG) |  
+| Device | Physical Volume (PV) |
+| Partition | Logical Volume (LV) |
+| Format Partition | Format/Extend LV |
+| Mount Partition | Mount LV |
+| Re-create Partition | Extend/Reduce LV |
+
+## LVM Snapshots
+- LVM snapshots captures a logical volume at a certain point in time and preserve it.
+- A volume can be rolled back by merging with a snapshot from a previous time.
+- LVM snapshots are not backups. They should be used as temporary holding solution for testing new grades, for example.
+- Create a LVM snapshot`sudo lvcreate -s -n <snapshot-name> -L <i>g <vg-name>/<lv_name>`
+- Roll back a logical volume: `sudo lvconvert --merge <vg-name>/<snapshot-name>`.
+- Remove a snapshot: `sudo lvremove <vg-name>/<snapshot-name>`.
+
+
+
+# Networks
+
+## Hostname
+- View current hostname
+    - The prompt shows the hostname by default.
+    - `cat /etc/hostname`
+- Update the hostname
+    1. Update the `/etc/hostname` file by `sudo hostnamectl set-hostname <hostname>` or edit `/etc/hostname` directly.
+    2. Update the entry in `/etc/hosts` to match the new hostname.
+- `localhost`: a hostname for a server to reach to itself.
+
+## Network Interfaces
+- View assigned IP addresses: `ip addr show` or simply `ip a`.
+- Interface name: `enp<i>s<j>` or `wlp<i>s<j>`
+    - `en` means wired ethernet, `wl` means wireless.
+    - `p<i>` means the ith system bus (starting at 0).
+    - `s<j>` means the jth PCI slot.
+- Bring a interface up or down: `sudo ip link set <interface-name> up/down`.
+- Command `ifconfig` is deprecated.
+
+## Assign a Fixed IP Address
+- Preferred method: static lease (DHCP reservation) via the DHCP server.
+- Alternative method: Assign a static IP address
+    1. Backup the netplan yaml file corresponding to the network interface. For example, `sudo cp /etc/netplan/00-network-manager-all.yaml /etc/netplan/00-network-manager-all.yaml.bak`.
+    2. Update the yaml file with a static IP address. 
+        - Entries of the yaml file
+            - `addresses`: the static IP address assigned to the server.
+                - Should be within the scope of local network.
+                - Should be out of the scope of DHCP.
+                - `/24` indicates that the IP address is part of a 24-bit subnet.
+            - `gateway4` address should be the same with the gateway/router.
+            - `nameservers`: IP addresses for DNS servers, usually the same with gateway, but can be different.
+
+        - Example:
+            ```yaml
+            # This is the network config written by 'tsaork'
+            network:
+            ethernets:
+                enp0s25:
+                addresses: [192.168.100.50/24]
+                gateway4: 192.168.100.1
+                nameservers:
+                    addresses: [192.168.100.1, 192.168.100.2]
+            version: 2
+            ```
+    3. Double check every entry and get ready if the network stop working.
+        - Try not to update the network config remotely, e.g. via SSH.
+        - If SSH is the only option, `tmux` is a useful tool. 
+            1. Install: `sudo apt install tmux`.
+            2. Type `tmux`, then all commands after will be run by `tmux` in the background, even if one disconnect with `tmux` using *Ctrl + b*, release, and then press *d*.
+            3. If detached from the `tmux` session, rejoin it using `tumx a`.
+    4. `sudo netplan apply` to make the change effective.
+    5. Check the updates using `ip a`.
+
+## Linux Name Resolution
+- `hosts` entry in the file `/etc/nsswitch.conf` defines the order to check the names.
+    - `files` means checking `/etc/hosts`.
+- Managing name resolution using `/etc/hosts` is a quick workaround but not convenient since only this server is able to access it, contrasting to a DNS server.
+- `systemd-resolve --status | grep DNS\ Servers` will show the current DNS server in use.
+
+## TCP v.s. UDP
+- TCP (Transmission Control Protocol) & UDP (User Datagram Protocol) are two protocols to transfer data over internet.
+- TCP is more reliable & secure, while UDP is faster.
+
+## Port & Socket
+- Like IP addresses are used to distinguish machines, port is used to distinguish services.
+- Possible values of a port: 0 to 65535.
+- The combination of a IP address, a port, and a protocol (TCP or UDP) is called a socket, and has to be unique for every service in the local network.
+- "Well known ports": first 1000 ports reserved for common services, which requires the `sudo` privilege.
+- Current port in use can be checked at: `/etc/services`.
+- Current port listened to: `sudo ss -tunlp`.
+
+
+
+# OpenSSH
+
+## Installation & Running
+- Check if OpenSSH client was installed: `which ssh`.
+- Install client: `sudo apt install openssh-client`.
+- Check if OpenSSH daemon (service) was installed: `which sshd`.
+- Check the status of OpenSSH service: `systemctl status sshd`.
+- Install OpenSSH server: `sudo apt install openssh-server`.
+- If the service is not running: `sudo systemctl start ssh`
+- If the service is diabled (will not automatically start at the next reboot): `sudo systemctl enable ssh`
+- Check the port the service is using: `sudo ss -tunlp | grep ssh`
+
+## Connection from Client
+- `ssh <ip>` or `ssh <hostname>`
+- Specify the username: `ssh <username>@<ip>` or `ssh <username>@<hostname>`
+- Specify port number: `ssh -p <port> <ip>`
+- Close the SSH connection: `exit` or press *Ctrl + d*.
+- Config file: save options to connect to different servers and simplify the `ssh` connecting command.
+    - Example:
+        ```
+        Host myserver
+            Hostname: 192.168.1.23
+            Port 2223
+            User tsaork
+
+        Host server2
+            Hostname: server2.mynet.org
+            Port 2222
+            User someuser
+        ```
+    - With the above example: `ssh myserver` is equivalent to `ssh -p 2223 tsaork@192.168.1.23`
+
+## SSH Key Authentication
+- Generating key pairs: `ssh-keygen`
+    - Choice of algorithms - `-t` option: `ed25519` is preferred over `rsa`
+    - Creates `~/.ssh` directory if not exists.
+- Copy the public key to server: `ssh-copy-id -i <path-to-pub-key> <hostname>`
+    - Copies the content of the public key to `~/.ssh/authorized_keys` on the server.
+- Change passphrase: `ssh-keygen -p`
+- SSH agent: use SSH agent to avoid typing the passphrase at every connection (at the current shell).
+    - `eval $(ssh-agent)`: add necessary variables in the current shell environment.
+    - `ssh-add <path-to-private-key>`
+
+## Secure SSH
+- Check authorization log at: `/var/log/auth.log`
+- OpenSSH service is configured in the file `/etc/ssh/sshd_config`
+- Recommended configuration
+    - Change the port SSH uses to some other number than 22.
+        - After changing the port number, SSH connections need to be established using the `-p` or `-P` option:
+            - `ssh -p <port-number> <hostname>`
+            - `scp -P <port-number> <filename> <hostname>:<pathname>`
+    - Always use `Protocol 2` instead of `Protocal 1`.
+    - Use `AllowUsers` and `AllowGroups` to control acccesses via SSH.
+        - `AllowUsers` overrides `AllowGroups`.
+        - Add an entry: `AllowUsers <user1> <user2> <user3> ...`.
+        - Add an entry: `AllowGroups <group1> <group2> ...`.
+        - To create a group and add user to it: `sudo groupadd <ssh-group>`, `sudo usermod -aG <ssh-group> <username>`
+        - Disable root user access via SSH: `PermitRootLogin no`.
+        - Disable password authenticated SSH connection: `PasswordAuthentication no`.
+            - Make sure public key authentication works before disable password connections.
+- Restart the service after modifying the config file: `sudo systemctl restart sshd`
