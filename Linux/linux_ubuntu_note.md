@@ -1,15 +1,13 @@
-# Managing Linux System with Ubuntu as an example
-
-## Mainly from "Mastering Ubuntu Server"
-
-**With tips and notes on Linux management from other sources**
-
+# Managing Linux System (Ubuntu 20.04)
 **All commands are run using Bash unless declared differently**
 
-- Author: Jay Lacroix
-- Edition: 3rd
-- Publisher: Packt
-- Reading start date: 2021-06-04
+# References
+- Mastering Ubuntu Server
+    - Author: Jay Lacroix
+    - Edition: 3rd
+    - Publisher: Packt
+    - Reading start date: 2021-06-04
+- [Bash Reference Manual](https://www.gnu.org/software/bash/manual/html_node/index.html)
 
 
 
@@ -440,6 +438,156 @@
 
 
 
+# Bash Shell
+
+- **Bash**: Bourne Again Shell
+- Other shells: zsh, fish, ksh
+- Default shell configuraton: last column in `/etc/passwd`
+    - Special shell types:
+        - `/bin/false`: no shell access for the user, no message.
+        - `/usr/sbin/nologin`: no shell access for the user, print a message.
+
+## Builtin v.s. External Commands
+- Builtin commands: specific to a certain shell. Behaviors of them can be different for differen shells or versions of the same shell.
+- External commands: not specific to a certain shell. Like ones in `usr/bin` or user installed. Behavior of external commands are not impacted by the shell.
+- [Builtin commands of bash (for version 5.1)](https://www.gnu.org/software/bash/manual/bash.html#Shell-Builtin-Commands)
+- Common built-in commands for bash (behavior depends on shell):
+    - `cd`, `pwd`, `break`, `eval`, `exec`, `exit`, `export`, `alias`, `echo`, `help`, `printf`, `read`, `ualias`.
+
+## Navigation
+- `pwd`: print working directory
+- `cd`: change directory
+    - `cd -`: return to previous directory
+    - `cd ~` or `cd`: go to home directory
+
+## Printing
+- `echo`: recommended to be used to print simple strings without special characters because the behavior of `echo` dealing with sepcial characters within `""` varies with distributions and configurations.
+- `printf`: with more funcationalities than `echo`. The behavior handling special characters are more consistent.
+
+## Bash History
+- History is stored at `~/bash_history`.
+- Can be access using *up* and *down* arrow keys.
+- Command `history` prints the shell histories with the index.
+- Historical commands can be run using `!<index>`
+- Last commands can be accessed using `!!`, and can be combined within other commands like `sudo !!`
+- Remove a command from the history: `history -d <index>`
+- Commands with sensative infomation like passwords are stored in the history file unless the command was prefixed with a whitespace (default in Ubuntu 20.04).
+- The history behavior can be configured in `~/.bashrc` as `HISTCONTROL=<value>` with possible values as
+    - `HISTCONTROL=ignorespace` ignores the command predixed with a whitespace.
+    - `HISTCONTROL=ignoredups` ignores the duplicated commands.
+    - `HISTCONTROL=ignorespace:ignoredups` or simply `HISTCONTROL=ignoreboth` ignores both cases.
+- The histroy can be searched using **Ctrl + r**. See **Useful Key Strokes** for details.
+
+## Useful Key Strokes
+- **Tab**
+    - Press once: completes path if possible
+    - Press twice: shows sugguested path
+- **Ctrl + a**: moves the cursor to the beginning of the line.
+- **Ctrl + e**: moves the cursor to the end of the line.
+- **Ctrl + l**: clears the screen.
+- **Ctrl + k**: deletes characters from the cursor to the end of the line.
+- **Ctrl + u**: deletes everything you typed on that line.
+- **Ctrl + r**: search for the commands history
+    1. Press **Ctrl + r**
+    2. Type a keyword to search.
+    3. The last match shows up.
+    4. Press **Ctrl + r** again to move up the history to the previous match.
+- **Ctrl + x + e**: edits the current command in the text editor, when saved, the command is executed.
+
+## Different ways to chain commands
+- Piping: `<command1> | <command2>` redirect `stdout` of `command1` as the `stdin` of `command2`.
+- AND: `<command1> && <command2>` runs `command1` first and only runs `command2` if the execution of `command1` was successful.
+- Semicolon: `<command1>; <command2>` runs both `command1` and `command2` regardless of success.
+
+## Exit code for commands
+- `echo $?`: Print exit code for a command after running it.
+- `?` is the variable with the exit code of the last run command as the value.
+
+## Alias
+- `alias`: shows a list of available aliases in the shell.
+- `alias <alias-command>="<actual-command>"`: create an alias command for the actual command. Either single quotes or double quotes work.
+- Some useful commands and aliases
+    - Top 10 CPU consuming processes: `alias cpu10='ps -L aux | sort -nr -k 3 | head -10'`.
+    - Top 10 RAM consuming processes: `alias mem10='ps -L aux | sort -nr -k 4 | head -10'`.
+    - View all mounted filesystems in a tabbed layout: `alias lsmount='mount | column -t'`.
+- Store aliases in `.bashrc` to reuse them.
+
+## Variables
+- Set a variable: `<var-name>=<var-value>`
+- `echo`: Print a variable value `echo $<var-name>`
+- `env` (external commands): print all variable in the current shell.
+- `read <var-name>`: Set a variable value using the prompt.
+
+## Scripting
+- Shebang (hash bang) line tells the shell which program to execute the script. Example: `#!/bin/bash`.
+- All lines starting with `#` will be ignored except the top line (shebang).
+- Make a script executable by its owner: `chmod +x <path-to-script>`
+- Run a script by typing its full path `<path-to-script>`
+- Run a script in current working directory: `./<script>`
+
+## Streams: stdout, stdin, stderr
+- File descriptors
+    - stdin: 0
+    - stdout: 1
+    - stderr: 2
+
+## Redirection to a file
+- `>` for overwriting; `>>` for appending.
+- `>` is equivalent to `1>`. In other words, `stdout` is the default.
+- `1>` or `1>>` or simply `>` or `>>`: redirect `stdout` only.
+- `2>` or `2>>`: redirect `stderr` only.
+- `&>` or `&>>`: redirect both `stdout` and `stderr`.
+- `m>&n`: redirect `m` to the current location of `n`
+    - Example 1: `ls x y > output.txt 2>&1`. Both `stdout` and `stderr` will be redirected to `output.txt`. 
+        - Explanation: `> output.txt` set the current location of `stdout` to `output.txt` and then `2>&1` redirect the `stderr` to the current location of `stdout`, which is already `output.txt`.
+    - Example 2: `ls x y 2>&1 > output.txt`. `stdout` will be redirected to `output.txt` and `stderr` will be printed.
+        - Explanation: `2>&1` redirect the `stderr` to the current location of `stdout`, which is printing. Then the current location of `stdout` was set to `output.txt`.
+- `m> /dev/null`: do not display the `m` stream (delete the stream)
+- `1> file1 2> file2`: redirect `stdout` to `file1` and `stderr` to `file2`
+
+## Piping - Redirect stdout of a command as stdin of another command
+- `<command1> | <command2>`
+
+
+
+# Vim
+- *Ctrl + z* bring editor to background.
+- `fg` to bring editor to foreground.
+- Configuration: `~/.vimrc`
+    - Example: Add line `set number` will display line number by default
+- Command mode
+    - `:q`: quit (when there was no change)
+    - `:q!`: force quit (discarding changes)
+    - `:wq`: write & quit
+    - `:! <shell command>`: run a shell command; Press *Enter* to go back to vim.
+    - `:sp` or `:split`: view current file in a horizontally splitted view.
+        - `:sp /path/to/file`: view another file in a horizontally splitted view.
+        - "RO" means read-only.
+        - Holding *Ctrl* and press *w* key twice: switch between the two splits.
+        - *Esc*: return to vim.
+    - `:vs` or `:vsplit`: vertical version of `:sp`.
+    - Example command: `:%s/<keyword1>/<keyword2>/g` - replace all `keyword1` with `keyword2`.
+    - Line number: `:set number` to display; `:set nonumber` to disable.
+    - Press *x*: delete single character
+    - Press *d* twice: delete the whole line and copy it to clipboard
+    - Press *p*: paste text in clipboard to where the cursor is.
+    - Press *G* (*Shift* + *g*): go to the end of the file.
+    - Press *g* twice: go to the top of the file.
+- Insert mode
+    - In command mode, press *i* or *insert*: go to insert mode.
+    - In command mode, press *a*: enter the insert mode one character to the right.
+    - In command mode, press *A* (*Shift* + *a*): enter the insert mode with the cursor at the end of the line.
+    - *Esc* to quit insert mode.
+- Visual mode: select text
+    1. Move the cursor to the first character.
+    2. Press *v*
+    3. Move the cursor to the last character.
+    4. Press *y* to disable the hightlight; Now the selected text is copied in clipboard.
+    5. Press *p* to paste the copied text to where the cursor is.
+    6. Press *u* to undo changes.
+
+
+
 # Processes
 
 ## Background & Foreground
@@ -731,6 +879,14 @@
 - Bring a interface up or down: `sudo ip link set <interface-name> up/down`.
 - Command `ifconfig` is deprecated.
 
+## IP Addresses (IPv4) & Subnet Masks
+- IPv4 addresses are 32-bit, separated into four 8-bit segments by dots like `192.168.0.12` (in decimal). Rewriting an address into binaries shows clearly there are four 8-bit numbers.
+- The smallest value for each segment is 0, while the largest is 255.
+- Local v.s. Global: A global IP address (e.g. `208.67.222.222`) is valid throughout all the internet while a local IP address (e.g. `192.168.0.5`) is only valid with in a local network.
+- A (local) network can be splitted into subnets by setting up different CIDR (Classless Inter-Domain Routing). The value of a CIDR means how many bits reprensent the network and the rest for hosts (`192.168.0.3/24`). For example:
+    - Class C or `/24`: First 24 bits (3 segments) are defined as a network, and the last 8 bits (last segment) are used to define hosts in the network. Maximum number of hosts: 254.
+- Netmask: another way of specifying the subnets setting. `255` means a segment is used for network, `0` means a segment is used for hosts. For example: `255.255.255.0` is equivalent to `/24`.
+
 ## Assign a Fixed IP Address
 - Preferred method: static lease (DHCP reservation) via the DHCP server.
 - Alternative method: Assign a static IP address
@@ -783,7 +939,20 @@
 - Current port in use can be checked at: `/etc/services`.
 - Current port listened to: `sudo ss -tunlp`.
 
+## Port Forwarding & Triggering
+- Port forwarding is used to send network traffic to certain service in certain machine within LAN by the gateway.
+- Set up in a gateway
+    - Inbound port number
+    - Inbound external IP address where requests was sent from (can be restricted or all)
+    - Internal IP of the receipient machine
+    - Internal port number of the receipient machine (can be same with the inbound or not)
+- After the gateway receives a request from the external IP addresses with a certain port number, it sends the request to the designated IP address with designated port number.
+- Port Triggering
+    - More dynamic and flexible than port forwarding.
+    - Ranges of IP address and port numbers can be set instead of one-to-one relationship in port forwarding.
 
+## Set up an Ubuntu Server as a DHCP/DNS/Gateway/NTP Server
+- Skip for now since it is not needed. Refer to the book itself.
 
 # OpenSSH
 
@@ -846,3 +1015,60 @@
         - Disable password authenticated SSH connection: `PasswordAuthentication no`.
             - Make sure public key authentication works before disable password connections.
 - Restart the service after modifying the config file: `sudo systemctl restart sshd`
+
+## SSH Channeling (Port Forwarding)
+- Port forwarding using a SSH connection to a gateway
+- Local forwarding is used for a local client to access a socket behind a gateway.
+    - `ssh -L <local-port>:<remote-ip>:<remote-port> <ssh-gateway-ip>`
+    - It requires the local client has the access to SSH to the gateway.
+- Remote forwarding is used for any remote client to access a local server behind a gateway.
+    - `ssh -R <remote-port>:localhost:<local-port> <ssh-gateway-ip>`
+    - Any remote client having access to SSH to the gateway can send requests to the local socket.
+- Both local and remote forwarding command can be summarized as: `ssh -L|R <client-port>:<destination-ip>:<destination-port> <ssh-gateway-ip>`
+- IP addresses can be replaced by the hostname if recogonizable by the client.
+
+
+
+# File Sharing
+
+## Compare solutions
+- Samba: sharing between Linux and Windows machines
+- NFS: sharing between Linux machines
+- SSHFS: temporary sharing with SSH
+
+## SSHFS
+- Installation: `sudo apt install sshfs`
+- Mount an external directory to a local one: `sshfs <username>@<remote-ip>:<remote-dir> <local-dir>`
+- Unmount
+    - If one has root priviledge: `sudo unmount <local-dir>`
+    - If one does not have root priviledge: `fusermount -u <local-dir>`
+- Add an entry to `/etc/fstab`. 
+    - Example: `<username>@<remote-ip>:<remote-dir> <local-dir> fuse.sshfs rw,noauto,users,_netdev 0 0`.
+    - Once added, next time to mount it: `/mnt/myfiles`
+    - Always use `noauto`
+
+
+
+
+# File Copy / Transfer
+
+## rsync: for complex file syncing jobs
+- The most useful archive `-a` option
+    - `sudo rsync -a <from-dir> <to_dir>`
+    - retains as much metadata including permissions and timestamp
+    - `-a` is a shortcut for `-rlptgoD`
+- `-r`: sync recursively
+- `-v`: verbose mode
+- Support SSH: `sudo rsync -av <from-dir> username@192.128.1.3:/<to-dir>`
+- `--delete`: delete files in the target dir if they are no longer in the source.
+- `-b`: backup mode; outdated files in the target will be moved to `-backup-dir` instead of being updated inplace.
+    - Example: `sudo rsync -avb --delete --backup-dir=/backup/$CURDATE /src /target`
+
+## SCP: for simple file copying
+- Local to remote: `scp <path-to-file> <username>@<remote-ip/hostname>:<dir>`
+- Remote to local: `scp <username>@<remote-ip/hostname>:<path-to-file> <dir>`
+- Target paths default to `home` if omitted.
+- `-r` for copying directories recursively: `scp -r <src> <target>`
+- `-P` for specifying the port number SSH service listens to: `scp -P 1235 <scr> <target>`.
+- `-v` for verbose model.
+- `scp` recognize configurations in `~/.ssh/config`.
