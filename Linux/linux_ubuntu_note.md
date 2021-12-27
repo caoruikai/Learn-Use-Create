@@ -22,13 +22,14 @@
 
 
 
-# Tips
+# Control Tips
 - `Alt+F<n>` will open the nth console session, up to 6.
 - When modifying configuration files related to authenticaion (password requirement, sudo access, SSH, etc), it is a good practice to open an extra console session with root access.
 - View OS info
     - `cat /etc/os-release`
     - `lsb_release -a`
-
+- Suspend the OS (if applicable): `systemctl suspend`; Use ignore option `systemctl suspend -i` to ignore logged in users.
+- Suspend the OS via SSH: `echo 'pm-suspend' | sudo at now + 2 minutes` and then disconnect the SSH session.
 
 
 # Date & Time
@@ -548,6 +549,11 @@
 ## Piping - Redirect stdout of a command as stdin of another command
 - `<command1> | <command2>`
 
+## Redirection to both stdout and files: tee command
+- `<command> | tee <option> <filename> `
+- Append to a file using `-a` option
+- Redirect to multiple files: `<command> | tee <file1> <file2>`
+
 
 
 # Vim
@@ -954,6 +960,24 @@
 ## Set up an Ubuntu Server as a DHCP/DNS/Gateway/NTP Server
 - Skip for now since it is not needed. Refer to the book itself.
 
+## mail (mailx)
+- Listing mode
+    1. `mailx`: list all mail in `/var/spool/mail/$USERNAME`
+    2. Type index: View content of email
+        - `Enter`: next page
+        - `q`: quit viewing the email
+    3. `delete`: delete the oldest email
+    4. `q`+`Enter`: quit `mailx`
+- Email mode
+    - Write the mail text via stdin: `mailx -s <title> <recipient-email>`. Write `EOT` as the last line to end the stdin.
+    - Mail text from a file: `mailx -s <title> <recipient-email> < <path-to-file>`
+    - Using pipes: `echo <email-text> | mailx -s <title> <recipient-email`
+    - Multiple recipients: `mailx -s <title> <recipient1>, <recipient2>`
+    - CC and BCC: `mailx -s <title> <recipient-email> -c <cc-recipient> -b <bcc-recipient>`
+    - Attachment: `mailx -s <title> <recipient-email> -a attachment.txt`
+
+
+
 # OpenSSH
 
 ## Installation & Running
@@ -971,7 +995,7 @@
 - Specify the username: `ssh <username>@<ip>` or `ssh <username>@<hostname>`
 - Specify port number: `ssh -p <port> <ip>`
 - Close the SSH connection: `exit` or press *Ctrl + d*.
-- Config file: save options to connect to different servers and simplify the `ssh` connecting command.
+- Config file `~/.ssh/config`: save options to connect to different servers and simplify the `ssh` connecting command.
     - Example:
         ```
         Host myserver
@@ -985,6 +1009,12 @@
             User someuser
         ```
     - With the above example: `ssh myserver` is equivalent to `ssh -p 2223 tsaork@192.168.1.23`
+- Config to keep the SSH session alive: add the following to `~/.ssh/config`
+    ```
+    Host *
+        ServerAliveInterval 60
+        ServerAliveCountMax 10
+    ```
 
 ## SSH Key Authentication
 - Generating key pairs: `ssh-keygen`
@@ -1027,7 +1057,20 @@
 - Both local and remote forwarding command can be summarized as: `ssh -L|R <client-port>:<destination-ip>:<destination-port> <ssh-gateway-ip>`
 - IP addresses can be replaced by the hostname if recogonizable by the client.
 
+## ProxyJump
+- Temporary: `ssh -J <user@bastion:port> <user@remote:port>`
+- Permanent: In `~/.ssh/config`
+    ```
+    Host bastion
+        HostName bastion.server.com
+        User tsao
+        Port 2222
 
+    Host magic-server
+        HostName magic-server.server.com
+        User tsao
+        ProxyJump bastion
+    ```
 
 # File Sharing
 
