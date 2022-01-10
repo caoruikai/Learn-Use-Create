@@ -8,6 +8,8 @@
     - Publisher: Packt
     - Reading start date: 2021-06-04
 - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/html_node/index.html)
+- [Ubuntu 20.04 Offical Documentation](https://help.ubuntu.com/20.04/ubuntu-help/index.html)
+- [Ubuntu Commnunity Help Wiki](https://help.ubuntu.com/community/CommunityHelpWiki)
 
 
 
@@ -386,6 +388,7 @@
 - Concern of adding a package repository
     - Packages may contain backdoors or malwares.
     - Repository may go offline or stop updating.
+- Proper way to edit repository list (DO NOT edit the `/etc/apt/sources.list` directly): `sudo apt-add-repository universe`
 - Repositories lists
     - `/etc/apt/sources.list`: single file with default repositories.
     - `/etc/apt/sources.list.d/`: `.list` files can be added to this directory.
@@ -1050,6 +1053,7 @@
 - Port forwarding using a SSH connection to a gateway
 - Local forwarding is used for a local client to access a socket behind a gateway.
     - `ssh -L <local-port>:<remote-ip>:<remote-port> <ssh-gateway-ip>`
+    - If the gateway and the remote are the same machine, use `localhost` for the remote IP: `ssh -L <local-port>:localhost:<remote-port> <ssh-gateway-ip>`
     - It requires the local client has the access to SSH to the gateway.
 - Remote forwarding is used for any remote client to access a local server behind a gateway.
     - `ssh -R <remote-port>:localhost:<local-port> <ssh-gateway-ip>`
@@ -1115,3 +1119,15 @@
 - `-P` for specifying the port number SSH service listens to: `scp -P 1235 <scr> <target>`.
 - `-v` for verbose model.
 - `scp` recognize configurations in `~/.ssh/config`.
+
+
+
+# Python
+
+## Install and create `virtualenv` for Python 3.8 on Ubuntu 20.04
+1. Add `universe` apt repository: `sudo apt-add-repository universe` (DO NOT change the `/etc/apt/source.list` file directly).
+2. Install `python3.8-venv`: `sudo apt install python3.8-venv`.
+3. Create a virtualenv: `python3 -m venv <venv-name>`
+4. Activate virtualenv: `source ~/<venv-name>/bin/activate`.
+5. Use `pip` to install packages: `python -m pip install -U <packages>`
+6. Deactivate the virtualenv: `deactivate`.
