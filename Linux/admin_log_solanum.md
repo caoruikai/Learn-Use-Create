@@ -45,12 +45,12 @@
 
 ## Install NVIDIA driver
 1. Check graphic card & available drivers: `ubuntu-drivers devices`
-2. For GeForce GTX 970, install the recommended driver: `sudo apt install nvidia-driver-495`. (TensorFlow 2.7.0 requires a driver >=450.80.02)
+2. For GeForce GTX 970, install the recommended driver: `sudo apt install nvidia-driver-495`.
 3. Reboot after installation: `sudo reboot`.
 4. Check the status after the reboot: `nvidia-smi`.
 
 ## Install CUDA
-1. Check `GCC` version: `gcc --version`. (CUDA 11.2.2 requires `GCC` 9.x on Ubuntu 20.04) It should already be handled when the driver was installed.
+1. Check `GCC` version: `gcc --version`. (CUDA 11.0 requires `GCC` 9.x on Ubuntu 20.04) It should already be handled when the driver was installed.
 2. Check kernels: `uname -r`. Make sure the kernels header and the development packages are installed. Every time the linux kernel is updated, it is good practice to run `sudo apt install linux-headers-$(uname -r)` to install those for the current kernel. Otherwise CUDA may break.
 3. Download machine learning deb: `wget https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/nvidia-machine-learning-repo-ubuntu2004_1.0.0-1_amd64.deb`
 4. Install `.deb` package: `sudo apt install ./nvidia-machine-learning-repo-ubuntu2004_1.0.0-1_amd64.deb`.
