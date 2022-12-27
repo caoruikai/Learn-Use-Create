@@ -1,5 +1,8 @@
 # Learning Note for Git and Github
 
+## Tips
+- **Always `eval $(ssh-agent)` and `ssh-add ...` before pushing and pulling.** Too much time wasted on this one!
+
 ## Useful Resources:
 
 - [Pro Git](https://git-scm.com/book/en/v2)
