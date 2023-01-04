@@ -1,6 +1,9 @@
 # specific for this repo
 archive/*
 .ipynb_checkpoints/
+*.h5
+log/
+logs/
 
 # General
 .DS_Store

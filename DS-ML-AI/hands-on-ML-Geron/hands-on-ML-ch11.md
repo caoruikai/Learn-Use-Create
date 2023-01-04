@@ -99,11 +99,11 @@
                 - $\mu$: average of training data, usually moving average (e.g. Keras)
                 - $\sigma$: standard deviation of training data, usually moving std (e.g. Keras)
         - Output of a Batch normalization layer (for a mini-batch B with $m_B$ instances and an instance i)
-            - Mean of the mini-batch: $\bm{\mu}_B = \frac{1}{m_B} \sum^{m_B}_{i=1} \bm{x}^{(i)}$
-            - Variance of the minit-batch: $\bm{\sigma}_B^2 = \frac{1}{m_B} \sum^{m_B}_{i=1}(\bm{x}^{(i)} - \bm{\mu}_B)^2$
-            - Normalized i-th instance: $\hat{\bm{x}}^{(i)} = \frac{\bm{x}^{(i)} - \bm{\mu}_B}{\sqrt{\bm{\sigma}_B^2 + \epsilon}}$
+            - Mean of the mini-batch: $\boldsymbol{\mu}_B = \frac{1}{m_B} \sum^{m_B}_{i=1} \boldsymbol{x}^{(i)}$
+            - Variance of the minit-batch: $\boldsymbol{\sigma}_B^2 = \frac{1}{m_B} \sum^{m_B}_{i=1}(\boldsymbol{x}^{(i)} - \boldsymbol{\mu}_B)^2$
+            - Normalized i-th instance: $\hat{\boldsymbol{x}}^{(i)} = \frac{\boldsymbol{x}^{(i)} - \boldsymbol{\mu}_B}{\sqrt{\boldsymbol{\sigma}_B^2 + \epsilon}}$
                 - $\epsilon$ is a tiny number to avoid devision by zero (typically 1e-5)
-            - $\bm{z}^{(i)} = \gamma \otimes \hat{\bm{x}}^{(i)} + \beta$
+            - $\boldsymbol{z}^{(i)} = \gamma \otimes \hat{\boldsymbol{x}}^{(i)} + \beta$
                 - $\otimes$ is element-wise multiplication
         - Example in Keras
             ```Python
@@ -117,7 +117,7 @@
             ```
         - Hyperparameters
             - `momentum`
-                - Momentum is used to update the moving average: $\hat{\bm{\mu}} \leftarrow \hat{\bm{\mu}} \times \text{momentum} + \bm{\mu}_B \times (1 - \text{momentum})$
+                - Momentum is used to update the moving average: $\hat{\boldsymbol{\mu}} \leftarrow \hat{\boldsymbol{\mu}} \times \text{momentum} + \boldsymbol{\mu}_B \times (1 - \text{momentum})$
                 - Usually set to a value closing to 1 (e.g. 0.9, 0.99)
             - `axis` controls the dimention to be normalized.
                 - Defaults -1, meaning normalize the last axis, or compute the means and variance across all other axes.
@@ -193,8 +193,8 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
 - Origianl Version: Boris Polyak 1964
     - Update the momentum and then the weight, unlike in Gradient Descent
         1. $\nabla_\theta J(\theta)$ is the gradient of the cost function $J(\theta)$ for weights $\theta$
-        2. $\bm{m} \leftarrow \beta \bm{m} - \eta \nabla_\theta J(\theta)$
-        3. $\theta \leftarrow \theta + \bm{m}$
+        2. $\boldsymbol{m} \leftarrow \beta \boldsymbol{m} - \eta \nabla_\theta J(\theta)$
+        3. $\theta \leftarrow \theta + \boldsymbol{m}$
     - Hyperparameters
         - $\eta$: learning rate for momentum
         - $\beta \in [0, 1]$: called `momentum` in Keras, controlling the "friction", usually 0.9 works well
@@ -208,8 +208,8 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
 - Nesterov Accelerated Gradient
     - Yurii Nesterov 1983
     - Use the gradient not at the local weight, but with a shift
-        1. $\bm{m} \leftarrow \beta \bm{m} - \eta \nabla_\theta J(\theta + \beta \bm{m})$
-        2. $\theta \leftarrow \theta + \bm{m}$
+        1. $\boldsymbol{m} \leftarrow \beta \boldsymbol{m} - \eta \nabla_\theta J(\theta + \beta \boldsymbol{m})$
+        2. $\theta \leftarrow \theta + \boldsymbol{m}$
     - Faster than vanilla momentum optimization
     - Keras: `optimzier = keras.optimizer.SGD(lr=0.001, momentum=0.9, nesterov=True)`
 
@@ -217,8 +217,8 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
 - John Duchi et al. 2011
 - Scales down the learning rate (adaptive learning rate) on the dimension where the gradient is large.
 - Algorithm
-    1. $\bm{s} \leftarrow \bm{s} + \nabla_{\bm{\theta}} J(\bm{\theta}) \otimes \nabla_{\bm{\theta}} J(\bm{\theta})$
-    2. $\bm{\theta} \leftarrow \bm{\theta} - \eta \nabla_{\bm{\theta}} J(\bm{\theta}) \oslash \sqrt{\bm{s} + \epsilon}$
+    1. $\boldsymbol{s} \leftarrow \boldsymbol{s} + \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) \otimes \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta})$
+    2. $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \eta \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) \oslash \sqrt{\boldsymbol{s} + \epsilon}$
     - $\otimes$ and $\oslash$ are element-wise multiplication and division
 - Performs well for quadratic problems, but often stops too early for DNN
 - Less need to tune learning rate since it is adaptive
@@ -227,8 +227,8 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
 - Add an exponential decay hyperparameter $\beta$ to the updates of adaptive factor of learning rate.
 - Avoid too fast slow down in the descent in AdaGrad
 - Algorithm
-    1. $\bm{s} \leftarrow \beta\bm{s} + (1-\beta)\nabla_{\bm{\theta}} J(\bm{\theta}) \otimes \nabla_{\bm{\theta}} J(\bm{\theta})$
-    2. $\bm{\theta} \leftarrow \bm{\theta} - \eta \nabla_{\bm{\theta}} J(\bm{\theta}) \oslash \sqrt{\bm{s} + \epsilon}$
+    1. $\boldsymbol{s} \leftarrow \beta\boldsymbol{s} + (1-\beta)\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) \otimes \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta})$
+    2. $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \eta \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) \oslash \sqrt{\boldsymbol{s} + \epsilon}$
     - $\otimes$ and $\oslash$ are element-wise multiplication and division
     - $\beta$ as 0.9 usually works well.
 - Keras: `optimizer = keras.optimizers.RMSprop(lr=0.001, rho=0.9)`
@@ -238,14 +238,14 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
 - Diederik P. Kingma & Jimmy Ba, 2014
 - Tracks exponential decaying average of both past gradients (like momentum optimization) and past squared gradients (like RMSProp).
 - Algorithm
-    1. Initialize $\bm{m}=\bm{s}=\bm{0}$, $\beta_1=0.9$, $\beta_2=0.999$, $\epsilon=10^{-7}$
-    2. $\bm{m} \leftarrow \beta_1 \bm{m} - (1-\beta_1) \nabla_\theta J(\bm{\theta})$
-    3. $\bm{s} \leftarrow \beta_2\bm{s} + (1-\beta_2)\nabla_{\bm{\theta}} J(\bm{\theta}) \otimes \nabla_{\bm{\theta}} J(\bm{\theta})$
-    4. $\hat{\bm{m}} \leftarrow \frac{\bm{m}}{1-\beta_1^T}$ with T as the number of iteration
-    5. $\hat{\bm{s}} \leftarrow \frac{\bm{s}}{1-\beta_2^T}$ with T as the number of iteration
-    6. $\bm{\theta} \leftarrow \bm{\theta} + \eta \hat{\bm{m}} \oslash \sqrt{\hat{\bm{s}} + \epsilon}$
+    1. Initialize $\boldsymbol{m}=\boldsymbol{s}=\boldsymbol{0}$, $\beta_1=0.9$, $\beta_2=0.999$, $\epsilon=10^{-7}$
+    2. $\boldsymbol{m} \leftarrow \beta_1 \boldsymbol{m} - (1-\beta_1) \nabla_\theta J(\boldsymbol{\theta})$
+    3. $\boldsymbol{s} \leftarrow \beta_2\boldsymbol{s} + (1-\beta_2)\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) \otimes \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta})$
+    4. $\hat{\boldsymbol{m}} \leftarrow \frac{\boldsymbol{m}}{1-\beta_1^T}$ with T as the number of iteration
+    5. $\hat{\boldsymbol{s}} \leftarrow \frac{\boldsymbol{s}}{1-\beta_2^T}$ with T as the number of iteration
+    6. $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \eta \hat{\boldsymbol{m}} \oslash \sqrt{\hat{\boldsymbol{s}} + \epsilon}$
 - Keras: `optimizer = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999)`
-- Adamax: variation of Adam by using $l_\infty$ norm of gradients instead of $l_2$ norm when updating $\bm{s}$
+- Adamax: variation of Adam by using $l_\infty$ norm of gradients instead of $l_2$ norm when updating $\boldsymbol{s}$
 - Nadam: Adam + Nesterov
 
 ### Compare optimizers
@@ -259,7 +259,7 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
     - $\eta(t) = \eta_0 / (1 + t/s)^c$
     - t is the iteration number
     - Hyperparameters
-        - `$\eta_0`: initial learning rate
+        - $\eta_0$: initial learning rate
         - `c`: power, typically 1
         - `s`: some step
     - After s steps, the learning rate drops to $\eta_0 / 2$, then after anther s steps, drops to $\eta_0 / 3$...
@@ -366,7 +366,7 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
 - Can be used to improve probability estimation and uncertainty estimates
 
 ### Max-Norm Regularization
-- After each training step, update the weight as $\bm{w} \leftarrow \bm{w} r / \Vert \bm{w} \Vert_2$.
+- After each training step, update the weight as $\boldsymbol{w} \leftarrow \boldsymbol{w} r / \Vert \boldsymbol{w} \Vert_2$.
 - r is a hyperparameter where the L2 norm of weight cannot exceed.
 - Keras: `keras.layers.Dense(100, activation="elu", kernel_initializer="he_normal", kernel_constraint=keras.constraints.max_norm(1.))`
 
