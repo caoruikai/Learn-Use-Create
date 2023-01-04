@@ -175,3 +175,6 @@ Reverse-Mode Autodiff algorithm
     - Goes through one y for each iteration.
     - It is expensive for long $\vec y$.
     - Deep learning usually has limited number of y's, making reverse-mode a good choice.
+    
+## Get Started with Keras
+- See the "Keras_Note.ipynb"
