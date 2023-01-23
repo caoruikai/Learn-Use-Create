@@ -4,6 +4,7 @@ archive/*
 *.h5
 log/
 logs/
+data/
 
 # General
 .DS_Store
