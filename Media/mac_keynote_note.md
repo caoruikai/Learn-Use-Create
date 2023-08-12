@@ -12,6 +12,7 @@
     - Outline titles are automatically filled if the slide has a title
     - Outline titles can be manually added for slides without a title
 - Click "Done" at bottom when edition finished
+- Use "Light Table View" to adjust the orders of slides
 
 # Slide Layout (Master Slide)
 - `View` buttion -> `Edit Slide Layout`
@@ -38,6 +39,12 @@
 ## Links
 - Links can be added to text and media
 - Links can be url, emails, slides, or objects in the same slide, etc.
+## Comment
+- Comment cannot be viewed when played, or in the side views.
+- It can be hidden in the left top "View" tab.
+## Presenter Note
+- Presenter note is at the bottom of each slides, different from the comments.
+- When `Play` -> `In Window`, a small presenter window shows up with note.
 
 # Animation
 ## Object Animation Effects
@@ -54,3 +61,15 @@
 ## Magic Move
 - Create 2 slides sharing some of the same objects, with some changes (e.g. positions).
 - Add a "Magic Move" transition effect between the 2 slides, animating transitions will be created by Keynote.
+
+# Presenting
+- Rehearsal mode: Presenter window can be customerized in rehearsal model like what to display and the postions.
+- Presenter window is only effective when there are multiple displays.
+- iOS devices can be connected to Macs and used as controls.
+- `Play` -> `Record Slideshow` can be used to record a video presenting the slides, optionally recording a voice-over. It can later be exported as a video in the export menu.
+- Choose different presetation type on the right side panel `Document`
+- A Keynote presentation can be exported into different format: PDF, PowerPoint, Movie...
+- Export as movies has 2 options
+    - Self play with set speed
+    - From a recorded slideshow
+- Play it remotely via Keynote live
